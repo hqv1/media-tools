@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.4</TargetFramework>
+    <AssemblyName>Hqv.MediaTools.Domain</AssemblyName>
+    <RootNamespace>Hqv.MediaTools.Domain</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hqv.CSharp.Common" Version="0.1.2" />
+  </ItemGroup>
+
+</Project>
