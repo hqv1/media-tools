@@ -10,7 +10,7 @@ namespace MediaTools.Domain.VideoFileInfo
     {
         public VideoFileInformationEntity Parse(JObject json)
         {
-            dynamic videoStream = json["streams"].FirstOrDefault(x => Extensions.Value<string>(x["codec_type"]) == "video");
+            dynamic videoStream = json["streams"].FirstOrDefault(x => x["codec_type"].Value<string>() == "video");
             if (videoStream == null)
             {
                 throw new HqvException("No video stream found");

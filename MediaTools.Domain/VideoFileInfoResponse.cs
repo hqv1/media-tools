@@ -3,6 +3,9 @@ using Hqv.MediaTools.Domain.Entities;
 
 namespace Hqv.MediaTools.Domain
 {
+    /// <summary>
+    /// IVideoFileInfo Response
+    /// </summary>
     public class VideoFileInfoResponse : ResponseBase
     {
         public VideoFileInfoResponse(VideoFileInfoRequest request)
@@ -10,8 +13,14 @@ namespace Hqv.MediaTools.Domain
             Request = request;
         }
 
+        /// <summary>
+        /// Request
+        /// </summary>
         public VideoFileInfoRequest Request { get; }
 
+        /// <summary>
+        /// Video file information
+        /// </summary>
         public VideoFileInformationEntity VideoFileInformation { get; set; }
     }
 }

@@ -3,12 +3,21 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using Hqv.CSharp.Common.Exceptions;
-using Hqv.CSharp.Common.Log;
 using Hqv.MediaTools.Domain;
 using Newtonsoft.Json.Linq;
 
 namespace MediaTools.Domain.VideoFileInfo
-{    
+{
+    /// <summary>
+    /// Video File Info service.
+    /// 
+    /// It uses FFProbe to get the information. It runs FFProbe as a command line with arguments, 
+    /// gets its output as a JSON and parses the output to obtain the Video File information.
+    /// 
+    /// You can get FFProbe at http://ffmpeg.org/download.html. It's part of the FFMpeg download.
+    /// Known to work with version 3.3.2.
+    /// 
+    /// </summary>
     public class VideoFileInfoService : IVideoFileInfoService
     {
         private readonly Settings _settings;
@@ -18,6 +27,9 @@ namespace MediaTools.Domain.VideoFileInfo
         private readonly StringBuilder _errorBuilder = new StringBuilder();
         private readonly StringBuilder _outputBuilder = new StringBuilder();        
 
+        /// <summary>
+        /// Settings
+        /// </summary>
         public class Settings
         {
             public Settings(string ffprobePath)
@@ -34,16 +46,29 @@ namespace MediaTools.Domain.VideoFileInfo
                 }
             }
 
+            /// <summary>
+            /// FFProbe path
+            /// </summary>
             public string FfprobePath { get; }
         }
 
+        /// <summary>
+        /// Return additional information than just the generic response
+        /// </summary>
         public class Response : VideoFileInfoResponse
         {
             public Response(VideoFileInfoRequest request) : base(request)
             {
             }
 
+            /// <summary>
+            /// FFProbe arguments
+            /// </summary>
             public string FfprobeArguments { get; set; }
+
+            /// <summary>
+            /// Output from FFProbe
+            /// </summary>
             public string FfprobeOutput { get; set; }
         }
 
@@ -132,7 +157,6 @@ namespace MediaTools.Domain.VideoFileInfo
             }
 
             return JObject.Parse(outputInfo);
-        }
-       
+        }       
     }
 }
