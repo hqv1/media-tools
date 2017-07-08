@@ -13,8 +13,8 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\MediaTools.Domain.VideoFileInfo\MediaTools.Domain.VideoFileInfo.csproj" />
-    <ProjectReference Include="..\MediaTools.Domain\MediaTools.Domain.csproj" />
+    <ProjectReference Include="..\Domain.VideoFileInfo\MediaTools.Domain.VideoFileInfo.csproj" />
+    <ProjectReference Include="..\Domain\MediaTools.Domain.csproj" />
   </ItemGroup>
   
   <ItemGroup>

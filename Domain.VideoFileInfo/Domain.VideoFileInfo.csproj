@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MediaTools.Domain\MediaTools.Domain.csproj" />
+    <ProjectReference Include="..\Domain\MediaTools.Domain.csproj" />
   </ItemGroup>
 
 </Project>
