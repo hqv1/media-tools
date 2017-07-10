@@ -2,10 +2,13 @@
 using System.IO;
 using FluentValidation;
 using Hqv.CSharp.Common.Exceptions;
-using Hqv.MediaTools.Domain;
+using Hqv.MediaTools.Types.ThumbnailSheet;
 
-namespace Domain.ThumbnailSheet
+namespace Hqv.MediaTools.ThumbnailSheet
 {       
+    /// <summary>
+    /// Thumbnail sheet service
+    /// </summary>
     public class ThumbnailSheetService : IThumbnailSheetService
     {
         private readonly Settings _settings;

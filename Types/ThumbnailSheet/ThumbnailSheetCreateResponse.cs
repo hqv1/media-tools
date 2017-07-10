@@ -1,6 +1,6 @@
 ﻿using Hqv.CSharp.Common.Components;
 
-namespace Hqv.MediaTools.Domain
+namespace Hqv.MediaTools.Types.ThumbnailSheet
 {
     /// <summary>
     /// Thumbnail sheet create response

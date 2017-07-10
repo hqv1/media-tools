@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{0E202E19-3258-4715-BED2-8CB2D6777C12}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Types", "Types\Types.csproj", "{0E202E19-3258-4715-BED2-8CB2D6777C12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.VideoFileInfo", "Domain.VideoFileInfo\Domain.VideoFileInfo.csproj", "{7BAE5729-6688-4E1C-8F62-369361F2AF19}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoFileInfo", "VideoFileInfo\VideoFileInfo.csproj", "{7BAE5729-6688-4E1C-8F62-369361F2AF19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.VideoFileInfo.Tests", "Domain.VideoFileInfoTests\Domain.VideoFileInfo.Tests.csproj", "{24BDE74C-3FE3-466A-8374-FB1AFE3F9B53}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoFileInfo.Tests", "VideoFileInfo.Tests\VideoFileInfo.Tests.csproj", "{24BDE74C-3FE3-466A-8374-FB1AFE3F9B53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.ThumbnailSheet", "Domain.ThumbnailSheet\Domain.ThumbnailSheet.csproj", "{66A54442-82FC-46CB-B59A-0E0DB9800517}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThumbnailSheet", "ThumbnailSheet\ThumbnailSheet.csproj", "{66A54442-82FC-46CB-B59A-0E0DB9800517}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.ThumbnailSheet.Tests", "Domain.ThumbnailSheet.Tests\Domain.ThumbnailSheet.Tests.csproj", "{70972FC4-C37A-49C7-BBF8-258B19706565}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThumbnailSheet.Tests", "ThumbnailSheet.Tests\ThumbnailSheet.Tests.csproj", "{70972FC4-C37A-49C7-BBF8-258B19706565}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0CBACFEB-2E58-4C76-8E5D-93680E530853}"
 EndProject

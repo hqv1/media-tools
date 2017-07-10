@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
+    <AssemblyName>Hqv.MediaTools.ThumbnailSheet</AssemblyName>
+    <RootNamespace>Hqv.MediaTools.ThumbnailSheet</RootNamespace>
+    <Authors>Hqv</Authors>
+    <Company>Hqv</Company>
+    <Product>Hqv</Product>
+    <Description>Create thumbnail sheet using FFmpeg and MagickImage. You'll need to obtain FFmpeg from http://ffmpeg.org/download.html.</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\Types\Types.csproj" />
   </ItemGroup>
 
 </Project>

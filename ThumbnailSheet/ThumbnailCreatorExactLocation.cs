@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Hqv.MediaTools.Domain;
+using Hqv.MediaTools.Types.ThumbnailSheet;
 
-namespace Domain.ThumbnailSheet
+namespace Hqv.MediaTools.ThumbnailSheet
 {
     internal class ThumbnailCreatorExactLocation
     {

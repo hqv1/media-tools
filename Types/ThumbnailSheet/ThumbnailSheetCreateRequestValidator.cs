@@ -1,7 +1,7 @@
 using System.IO;
 using FluentValidation;
 
-namespace Hqv.MediaTools.Domain
+namespace Hqv.MediaTools.Types.ThumbnailSheet
 {
     /// <summary>
     /// Validate the ThumbnailSheetCreateRequest

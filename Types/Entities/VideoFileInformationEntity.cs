@@ -1,4 +1,4 @@
-﻿namespace Hqv.MediaTools.Domain.Entities
+﻿namespace Hqv.MediaTools.Types.Entities
 {
     /// <summary>
     /// Video file information

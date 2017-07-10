@@ -1,4 +1,4 @@
-namespace Hqv.MediaTools.Domain
+namespace Hqv.MediaTools.Types.ThumbnailSheet
 {
     /// <summary>
     /// Service for thumbnail sheet. 

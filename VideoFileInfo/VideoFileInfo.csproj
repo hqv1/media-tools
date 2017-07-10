@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.4</TargetFramework>
+    <AssemblyName>Hqv.MediaTools.VideoFileInfo</AssemblyName>
+    <RootNamespace>Hqv.MediaTools.VideoFileInfo</RootNamespace>
+    <Authors>Hqv</Authors>
+    <Company>Hqv</Company>
+    <Product>Hqv</Product>
+    <Description>Extract information (e.g. codec, duration) from a video file using FFprobe. You'll need to obtain it from http://ffmpeg.org/download.html.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Types\Types.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,4 +1,4 @@
-namespace Hqv.MediaTools.Domain
+namespace Hqv.MediaTools.Types.ThumbnailSheet
 {
     public class ThumbnailSheetCreateRequest
     {

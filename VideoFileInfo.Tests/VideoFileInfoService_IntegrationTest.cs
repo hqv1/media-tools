@@ -1,10 +1,12 @@
 ﻿using FluentAssertions;
-using Hqv.MediaTools.Domain;
-using MediaTools.Domain.VideoFileInfo;
+using Hqv.MediaTools.Types;
+using Hqv.MediaTools.Types.VideoFileInfo;
+using Hqv.MediaTools.VideoFileInfo;
 using Xunit;
+
 // ReSharper disable InconsistentNaming
 
-namespace MediaTools.Domain.VideoFileInfoTests
+namespace Hqv.VideoFileInfo.Tests
 {
     /// <summary>
     /// Video File Info Service Integration Tests

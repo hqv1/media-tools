@@ -3,9 +3,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using Hqv.CSharp.Common.Exceptions;
-using Hqv.MediaTools.Domain;
+using Hqv.MediaTools.Types.ThumbnailSheet;
 
-namespace Domain.ThumbnailSheet
+namespace Hqv.MediaTools.ThumbnailSheet
 {
     internal class FfmpegThumbnailCreatorExactLocation
     {

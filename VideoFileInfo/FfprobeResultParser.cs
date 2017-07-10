@@ -1,10 +1,10 @@
 using System.IO;
 using System.Linq;
 using Hqv.CSharp.Common.Exceptions;
-using Hqv.MediaTools.Domain.Entities;
+using Hqv.MediaTools.Types.Entities;
 using Newtonsoft.Json.Linq;
 
-namespace MediaTools.Domain.VideoFileInfo
+namespace Hqv.MediaTools.VideoFileInfo
 {
     internal class FfprobeResultParser
     {

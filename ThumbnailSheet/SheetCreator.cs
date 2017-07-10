@@ -1,9 +1,9 @@
 using System.IO;
 using System.Linq;
-using Hqv.MediaTools.Domain;
+using Hqv.MediaTools.Types.ThumbnailSheet;
 using ImageMagick;
 
-namespace Domain.ThumbnailSheet
+namespace Hqv.MediaTools.ThumbnailSheet
 {
     internal class SheetCreator
     {

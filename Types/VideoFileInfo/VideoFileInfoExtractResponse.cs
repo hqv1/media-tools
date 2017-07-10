@@ -1,7 +1,7 @@
 ﻿using Hqv.CSharp.Common.Components;
-using Hqv.MediaTools.Domain.Entities;
+using Hqv.MediaTools.Types.Entities;
 
-namespace Hqv.MediaTools.Domain
+namespace Hqv.MediaTools.Types.VideoFileInfo
 {
     /// <summary>
     /// IVideoFileInfo Extract Response

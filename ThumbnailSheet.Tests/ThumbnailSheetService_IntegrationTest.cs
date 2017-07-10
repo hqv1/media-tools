@@ -1,12 +1,14 @@
 using System.IO;
 using System.Linq;
-using Domain.ThumbnailSheet;
 using FluentAssertions;
-using Hqv.MediaTools.Domain;
+using Hqv.MediaTools.ThumbnailSheet;
+using Hqv.MediaTools.Types;
+using Hqv.MediaTools.Types.ThumbnailSheet;
 using Xunit;
+
 // ReSharper disable InconsistentNaming
 
-namespace Hqv.Domain.ThumbnailSheet.Tests
+namespace Hqv.ThumbnailSheet.Tests
 {
     public class ThumbnailSheetService_IntegrationTest
     {

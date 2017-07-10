@@ -3,20 +3,21 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using Hqv.CSharp.Common.Exceptions;
-using Hqv.MediaTools.Domain;
+using Hqv.MediaTools.Types.VideoFileInfo;
 using Newtonsoft.Json.Linq;
 
-namespace MediaTools.Domain.VideoFileInfo
+namespace Hqv.MediaTools.VideoFileInfo
 {
     /// <summary>
     /// Video File Info service.
     /// 
-    /// It uses FFProbe to get the information. It runs FFProbe as a command line with arguments, 
+    /// It uses FFprobe to get the information. It runs FFprobe as a command line with arguments, 
     /// gets its output as a JSON and parses the output to obtain the Video File information.
     /// 
     /// You can get FFProbe at http://ffmpeg.org/download.html. It's part of the FFMpeg download.
     /// Known to work with version 3.3.2.
     /// 
+    /// todo: Creating and running a process could probably be put into a shared library 
     /// </summary>
     public class VideoFileInfoService : IVideoFileInfoService
     {
@@ -72,6 +73,10 @@ namespace MediaTools.Domain.VideoFileInfo
             public string FfprobeOutput { get; set; }
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="settings">Settings</param>
         public VideoFileInfoService(Settings settings)
         {
             _settings = settings;
@@ -79,6 +84,11 @@ namespace MediaTools.Domain.VideoFileInfo
             _ffprobeResultParser = new FfprobeResultParser();
         }
 
+        /// <summary>
+        /// Extract video information
+        /// </summary>
+        /// <param name="request">Request</param>
+        /// <returns>Response</returns>
         public VideoFileInfoExtractResponse Extract(VideoFileInfoExtractRequest request)
         {
             _response = new Response(request);
