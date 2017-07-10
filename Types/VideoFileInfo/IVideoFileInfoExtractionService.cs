@@ -3,7 +3,7 @@
     /// <summary>
     /// Service for video file information
     /// </summary>
-    public interface IVideoFileInfoService
+    public interface IVideoFileInfoExtractionService
     {
         /// <summary>
         /// Extracts information from a video file.

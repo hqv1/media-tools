@@ -18,14 +18,14 @@ namespace Hqv.ThumbnailSheet.Tests
 
         private const string outputFilePath = @"C:\Temp\ThumbnailSheetPath\Black_Panther_Teaser_Trailer-sheet.jpg";
 
-        private readonly ThumbnailSheetService _service;
+        private readonly ThumbnailSheetCreationService _creationService;
         private ThumbnailSheetCreateRequest _request;
         private ThumbnailSheetCreateResponse _response;
 
         public ThumbnailSheetService_IntegrationTest()
         {            
-            var settings = new ThumbnailSheetService.Settings(tempThumbnailPath, thumbnailSheetPath, ffmpegPath);
-            _service = new ThumbnailSheetService(settings);
+            var settings = new ThumbnailSheetCreationService.Settings(tempThumbnailPath, thumbnailSheetPath, ffmpegPath);
+            _creationService = new ThumbnailSheetCreationService(settings);
 
             if (File.Exists(outputFilePath))
             {
@@ -63,7 +63,7 @@ namespace Hqv.ThumbnailSheet.Tests
                 videoDurationInSeconds: 112,
                 sheetQuality: 80,
                 sheetTitleFontSize: 12,
-                thumbnailWidth: 160);
+                thumbnailWidth: 320);
         }
 
         private void GivenAInvalidRequest()
@@ -81,7 +81,7 @@ namespace Hqv.ThumbnailSheet.Tests
 
         private void WhenTheServiceIsCalled()
         {
-            _response = _service.Create(_request);
+            _response = _creationService.Create(_request);
         }
 
         private void ThenNoErrorsOccurred()

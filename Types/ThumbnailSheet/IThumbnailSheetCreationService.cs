@@ -1,9 +1,9 @@
 namespace Hqv.MediaTools.Types.ThumbnailSheet
 {
     /// <summary>
-    /// Service for thumbnail sheet. 
+    /// Service for creation of thumbnail sheet. 
     /// </summary>
-    public interface IThumbnailSheetService
+    public interface IThumbnailSheetCreationService
     {
         /// <summary>
         /// Create a thumbnailnail sheet.

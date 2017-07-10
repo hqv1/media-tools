@@ -5,15 +5,11 @@ using ImageMagick;
 
 namespace Hqv.MediaTools.ThumbnailSheet
 {
+    /// <summary>
+    /// Add a time stamp to an image
+    /// </summary>
     internal class TimeStamper
-    {
-        private readonly ThumbnailSheetService.Settings _settings;
-
-        public TimeStamper(ThumbnailSheetService.Settings settings)
-        {
-            _settings = settings;
-        }
-
+    {               
         public void Stamp(ThumbnailSheetCreateRequest request, string filePath, TimeSpan time)
         {
             var stampText = time.ToString(request.VideoDurationInSeconds >= 3600 ? @"hh\:mm\:ss" : @"mm\:ss");

@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 namespace Hqv.MediaTools.VideoFileInfo
 {
     /// <summary>
-    /// Video File Info service.
+    /// Video File Info Extraction service.
     /// 
     /// It uses FFprobe to get the information. It runs FFprobe as a command line with arguments, 
     /// gets its output as a JSON and parses the output to obtain the Video File information.
@@ -19,7 +19,7 @@ namespace Hqv.MediaTools.VideoFileInfo
     /// 
     /// todo: Creating and running a process could probably be put into a shared library 
     /// </summary>
-    public class VideoFileInfoService : IVideoFileInfoService
+    public class VideoFileInfoExtractionService : IVideoFileInfoExtractionService
     {
         private readonly Settings _settings;
         private readonly FfprobeResultParser _ffprobeResultParser;
@@ -29,10 +29,14 @@ namespace Hqv.MediaTools.VideoFileInfo
         private readonly StringBuilder _outputBuilder = new StringBuilder();        
 
         /// <summary>
-        /// Settings
+        /// Settings for the service
         /// </summary>
         public class Settings
         {
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            /// <param name="ffprobePath"> FFProbe path.</param>
             public Settings(string ffprobePath)
             {
                 FfprobePath = ffprobePath;
@@ -77,7 +81,7 @@ namespace Hqv.MediaTools.VideoFileInfo
         /// Constructor
         /// </summary>
         /// <param name="settings">Settings</param>
-        public VideoFileInfoService(Settings settings)
+        public VideoFileInfoExtractionService(Settings settings)
         {
             _settings = settings;
 
@@ -102,7 +106,7 @@ namespace Hqv.MediaTools.VideoFileInfo
             }
             catch (Exception ex)
             {
-                const string message = "Unhandled exception in VideoFileInfoService";                
+                const string message = "Unhandled exception in VideoFileInfoExtractionService";                
                 _response.AddError(new Exception(message, ex));
             }
             return _response;
@@ -117,19 +121,11 @@ namespace Hqv.MediaTools.VideoFileInfo
 
         private void RunFfprobe(VideoFileInfoExtractRequest request)
         {
-            var ffprobeArguments = $"-v quiet -print_format json -show_format -show_streams \"{request.VideoFilePath}\"";
-            _response.FfprobeArguments = ffprobeArguments;
+            var arguments = $"-v quiet -print_format json -show_format -show_streams \"{request.VideoFilePath}\"";
+            _response.FfprobeArguments = arguments;
             var process = new Process
             {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = _settings.FfprobePath,
-                    Arguments = ffprobeArguments,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    CreateNoWindow = true
-                }
+                StartInfo = CreateProcessStartInfo(arguments)
             };
             process.OutputDataReceived += OutputHandler;
             process.ErrorDataReceived += ErrorHandler;
@@ -137,6 +133,19 @@ namespace Hqv.MediaTools.VideoFileInfo
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
             process.WaitForExit();
+        }
+
+        private ProcessStartInfo CreateProcessStartInfo(string arguments)
+        {
+            return new ProcessStartInfo
+            {
+                FileName = _settings.FfprobePath,
+                Arguments = arguments,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            };
         }
 
         private void ErrorHandler(object sender, DataReceivedEventArgs e)

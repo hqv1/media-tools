@@ -8,16 +8,28 @@ namespace Hqv.MediaTools.ThumbnailSheet
 {       
     /// <summary>
     /// Thumbnail sheet service
+    /// 
+    /// todo: validation can be abstracted to a shared library
     /// </summary>
-    public class ThumbnailSheetService : IThumbnailSheetService
+    public class ThumbnailSheetCreationService : IThumbnailSheetCreationService
     {
         private readonly Settings _settings;
-        private Response _response;
-        private readonly ThumbnailCreatorExactLocation _thumbnailCreator;
         private readonly SheetCreator _sheetCreator;
+        private readonly ThumbnailCreatorExactLocation _thumbnailCreator;        
 
+        private Response _response;
+
+        /// <summary>
+        /// Settings for the service
+        /// </summary>
         public class Settings
         {
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            /// <param name="tempThumbnailPath">Temporary directory to store thumbnails</param>
+            /// <param name="thumbnailSheetPath">Directory to save the thumbnail</param>
+            /// <param name="ffmpegPath">FFmpeg path</param>
             public Settings(string tempThumbnailPath, string thumbnailSheetPath, string ffmpegPath)
             {
                 TempThumbnailPath = tempThumbnailPath;
@@ -27,8 +39,18 @@ namespace Hqv.MediaTools.ThumbnailSheet
                 Validate();
             }
 
+            /// <summary>
+            /// Temporary directory to store thumbnails. Files will be deleted once done. Don't store files you may want
+            /// in this directory
+            /// </summary>
             public string TempThumbnailPath { get; }
+            /// <summary>
+            /// Directory to save the thumbnail
+            /// </summary>
             public string ThumbnailSheetPath { get; }
+            /// <summary>
+            /// FFmpeg path
+            /// </summary>
             public string FfmpegPath { get; }
             
             private void Validate()
@@ -43,6 +65,9 @@ namespace Hqv.MediaTools.ThumbnailSheet
             }
         }
 
+        /// <summary>
+        /// Validate Settings
+        /// </summary>
         private class SettingsValidator : AbstractValidator<Settings>
         {
             public SettingsValidator()
@@ -53,17 +78,30 @@ namespace Hqv.MediaTools.ThumbnailSheet
             }
         }
 
+        /// <summary>
+        /// Add some additional information to the response
+        /// </summary>
         public class Response : ThumbnailSheetCreateResponse
         {
             public Response(ThumbnailSheetCreateRequest request) : base(request)
             {
             }
 
+            /// <summary>
+            /// FfmpegArguments. Only populated on error
+            /// </summary>
             public string FfmpegArguments { get; set; }
+            /// <summary>
+            /// FfmpegErrorOutput. Only populated on error
+            /// </summary>
             public string FfmpegErrorOutput { get; set; }
         }
 
-        public ThumbnailSheetService(Settings settings)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="settings">Settings</param>
+        public ThumbnailSheetCreationService(Settings settings)
         {
             _settings = settings;
 
@@ -71,6 +109,11 @@ namespace Hqv.MediaTools.ThumbnailSheet
             _sheetCreator = new SheetCreator(_settings);
         }
 
+        /// <summary>
+        /// Create a thumbnail sheet
+        /// </summary>
+        /// <param name="request">Request</param>
+        /// <returns>Response</returns>
         public ThumbnailSheetCreateResponse Create(ThumbnailSheetCreateRequest request)
         {            
             _response = new Response(request);
@@ -84,7 +127,7 @@ namespace Hqv.MediaTools.ThumbnailSheet
             }
             catch (Exception ex)
             {
-                const string message = "Unhandled exception in ThumbnailSheetService";                
+                const string message = "Unhandled exception in ThumbnailSheetCreationService";                
                 _response.AddError(new Exception(message, ex));
             }            
             return _response;
@@ -103,14 +146,16 @@ namespace Hqv.MediaTools.ThumbnailSheet
         {
             var validator = new ThumbnailSheetCreateRequestValidator();
             var validationResult = validator.Validate(request);
-            if (!validationResult.IsValid)
-            {
-                var exception = new HqvException("Validation on request failed");
-                exception.Data["errors"] = validationResult.Errors;
-                throw exception;
-            }
+            if (validationResult.IsValid) return;
+
+            var exception = new HqvException("Validation on request failed");
+            exception.Data["errors"] = validationResult.Errors;
+            throw exception;
         }
 
+        /// <summary>
+        /// Delete files from the temp folder
+        /// </summary>
         private void CleanupTempFolder()
         {
             foreach (var file in Directory.GetFiles(_settings.TempThumbnailPath, "thumbnail*.png"))
@@ -118,8 +163,5 @@ namespace Hqv.MediaTools.ThumbnailSheet
                 File.Delete(file);
             }
         }        
-    }
-
-
-    
+    }    
 }

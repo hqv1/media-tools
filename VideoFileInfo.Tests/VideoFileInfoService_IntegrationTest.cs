@@ -19,13 +19,13 @@ namespace Hqv.VideoFileInfo.Tests
         private const string VideoFilePathValid = @"C:\Temp\Black_Panther_Teaser_Trailer.webm";
 
         private VideoFileInfoExtractRequest _request;
-        private readonly VideoFileInfoService _videoFileInfoService;
+        private readonly VideoFileInfoExtractionService _videoFileInfoExtractionService;
         private VideoFileInfoExtractResponse _response;
 
         public VideoFileInfoService_IntegrationTest()
         {            
-            var settings = new VideoFileInfoService.Settings(FfprobePath);            
-            _videoFileInfoService = new VideoFileInfoService(settings);
+            var settings = new VideoFileInfoExtractionService.Settings(FfprobePath);            
+            _videoFileInfoExtractionService = new VideoFileInfoExtractionService(settings);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Hqv.VideoFileInfo.Tests
 
         private void WhenTheServiceIsCalled()
         {
-            _response = _videoFileInfoService.Extract(_request);
+            _response = _videoFileInfoExtractionService.Extract(_request);
         }
 
         private void ThenVideoFileInformationIsExtracted()
