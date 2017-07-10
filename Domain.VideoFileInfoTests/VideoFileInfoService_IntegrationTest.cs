@@ -16,9 +16,9 @@ namespace MediaTools.Domain.VideoFileInfoTests
         // Video file to extract
         private const string VideoFilePathValid = @"C:\Temp\Black_Panther_Teaser_Trailer.webm";
 
-        private VideoFileInfoRequest _request;
+        private VideoFileInfoExtractRequest _request;
         private readonly VideoFileInfoService _videoFileInfoService;
-        private VideoFileInfoResponse _response;
+        private VideoFileInfoExtractResponse _response;
 
         public VideoFileInfoService_IntegrationTest()
         {            
@@ -35,11 +35,11 @@ namespace MediaTools.Domain.VideoFileInfoTests
             GivenAVideoFile();
             WhenTheServiceIsCalled();
             ThenVideoFileInformationIsExtracted();
-        }
+        }        
 
         private void GivenAVideoFile()
         {
-            _request = new VideoFileInfoRequest(VideoFilePathValid);
+            _request = new VideoFileInfoExtractRequest(VideoFilePathValid);
         }
 
         private void WhenTheServiceIsCalled()

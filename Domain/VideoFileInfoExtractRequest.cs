@@ -1,11 +1,11 @@
 namespace Hqv.MediaTools.Domain
 {
     /// <summary>
-    /// IVideoFileInfo Request
+    /// IVideoFileInfo Extract Request
     /// </summary>
-    public class VideoFileInfoRequest
+    public class VideoFileInfoExtractRequest
     {
-        public VideoFileInfoRequest(string videoFilePath)
+        public VideoFileInfoExtractRequest(string videoFilePath)
         {
             VideoFilePath = videoFilePath;
         }

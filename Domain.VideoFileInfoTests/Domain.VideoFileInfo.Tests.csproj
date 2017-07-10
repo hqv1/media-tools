@@ -1,7 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>    
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netcoreapp1.1</TargetFramework>    
+    <AssemblyName>Hqv.Domain.VideoFileInfo.Tests</AssemblyName>    
+    <RootNamespace>Hqv.Domain.VideoFileInfo.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,8 +15,8 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\Domain.VideoFileInfo\MediaTools.Domain.VideoFileInfo.csproj" />
-    <ProjectReference Include="..\Domain\MediaTools.Domain.csproj" />
+    <ProjectReference Include="..\Domain.VideoFileInfo\Domain.VideoFileInfo.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
   
   <ItemGroup>

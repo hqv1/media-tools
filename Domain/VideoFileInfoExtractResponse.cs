@@ -4,19 +4,19 @@ using Hqv.MediaTools.Domain.Entities;
 namespace Hqv.MediaTools.Domain
 {
     /// <summary>
-    /// IVideoFileInfo Response
+    /// IVideoFileInfo Extract Response
     /// </summary>
-    public class VideoFileInfoResponse : ResponseBase
+    public class VideoFileInfoExtractResponse : ResponseBase
     {
-        public VideoFileInfoResponse(VideoFileInfoRequest request)
+        public VideoFileInfoExtractResponse(VideoFileInfoExtractRequest request)
         {
             Request = request;
         }
 
         /// <summary>
-        /// Request
+        /// Original request
         /// </summary>
-        public VideoFileInfoRequest Request { get; }
+        public VideoFileInfoExtractRequest Request { get; }
 
         /// <summary>
         /// Video file information

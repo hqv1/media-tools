@@ -1,7 +1,7 @@
 ﻿namespace Hqv.MediaTools.Domain
 {
     /// <summary>
-    /// Extracts information from a video file
+    /// Service for video file information
     /// </summary>
     public interface IVideoFileInfoService
     {
@@ -10,6 +10,6 @@
         /// </summary>
         /// <param name="request">The request</param>
         /// <returns>If successful, the video file information. If not, the exception messages </returns>
-        VideoFileInfoResponse Extract(VideoFileInfoRequest request);
+        VideoFileInfoExtractResponse Extract(VideoFileInfoExtractRequest request);
     }
 }

@@ -55,9 +55,9 @@ namespace MediaTools.Domain.VideoFileInfo
         /// <summary>
         /// Return additional information than just the generic response
         /// </summary>
-        public class Response : VideoFileInfoResponse
+        public class Response : VideoFileInfoExtractResponse
         {
-            public Response(VideoFileInfoRequest request) : base(request)
+            public Response(VideoFileInfoExtractRequest request) : base(request)
             {
             }
 
@@ -79,7 +79,7 @@ namespace MediaTools.Domain.VideoFileInfo
             _ffprobeResultParser = new FfprobeResultParser();
         }
 
-        public VideoFileInfoResponse Extract(VideoFileInfoRequest request)
+        public VideoFileInfoExtractResponse Extract(VideoFileInfoExtractRequest request)
         {
             _response = new Response(request);
             try
@@ -98,14 +98,14 @@ namespace MediaTools.Domain.VideoFileInfo
             return _response;
         }
 
-        private void ExtractTry(VideoFileInfoRequest request)
+        private void ExtractTry(VideoFileInfoExtractRequest request)
         {
             RunFfprobe(request);
             var json = GetJsonFromFfprobeResult();
             _response.VideoFileInformation = _ffprobeResultParser.Parse(json);
         }
 
-        private void RunFfprobe(VideoFileInfoRequest request)
+        private void RunFfprobe(VideoFileInfoExtractRequest request)
         {
             var ffprobeArguments = $"-v quiet -print_format json -show_format -show_streams \"{request.VideoFilePath}\"";
             _response.FfprobeArguments = ffprobeArguments;
