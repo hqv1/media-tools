@@ -16,6 +16,15 @@ using Microsoft.Extensions.Configuration;
 
 namespace Hqv.MediaTools.Console
 {
+    /// <summary>
+    /// Creates a thumbnail sheet.
+    /// 
+    /// Use IVideoFileInfoExtractionService to extract the video file information. The only data we're looking for is 
+    /// the duration. Then use IThumbnailSheetCreationService to create the thumbnail sheet.
+    /// 
+    /// This console apps logs to a file on success and errors. You can configure the logs in appsettings.json and in 
+    /// nlog.config.
+    /// </summary>
     internal class Program
     {
         private static IConfigurationRoot _config;
@@ -42,9 +51,7 @@ namespace Hqv.MediaTools.Console
                 return 1;
             }
         }
-
         
-
         private static int CreateThumbnailSheet(CreateThumbnailSheetOptions opts)
         {
             var actor = _iocContainer.Resolve<CreateThumbnailSheetActor>();
@@ -66,7 +73,7 @@ namespace Hqv.MediaTools.Console
         private static void GetConfigurationRoot()
         {
             _config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
+                .AddJsonFile("appsettings.json", optional:false, reloadOnChange:true)                
                 .Build();
         }
 
