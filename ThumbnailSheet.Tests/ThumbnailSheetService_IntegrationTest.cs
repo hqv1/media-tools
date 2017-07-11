@@ -2,7 +2,6 @@ using System.IO;
 using System.Linq;
 using FluentAssertions;
 using Hqv.MediaTools.ThumbnailSheet;
-using Hqv.MediaTools.Types;
 using Hqv.MediaTools.Types.ThumbnailSheet;
 using Xunit;
 

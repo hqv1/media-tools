@@ -8,6 +8,7 @@
     <Company>Hqv</Company>
     <Product>Hqv</Product>
     <Description>Extract information (e.g. codec, duration) from a video file using FFprobe. You'll need to obtain it from http://ffmpeg.org/download.html.</Description>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

@@ -8,6 +8,7 @@
     <Company>Hqv</Company>
     <Product>Hqv</Product>
     <Description>Create thumbnail sheet using FFmpeg and MagickImage. You'll need to obtain FFmpeg from http://ffmpeg.org/download.html.</Description>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
