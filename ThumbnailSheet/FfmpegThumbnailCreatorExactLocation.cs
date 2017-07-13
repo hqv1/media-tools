@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using Hqv.CSharp.Common.App;
 using Hqv.CSharp.Common.Exceptions;
 using Hqv.MediaTools.Types.ThumbnailSheet;
 
@@ -15,8 +16,6 @@ namespace Hqv.MediaTools.ThumbnailSheet
         private static readonly object Lock = new object();
 
         private readonly ThumbnailSheetCreationService.Settings _settings;
-        private readonly StringBuilder _errorBuilder = new StringBuilder();
-        private readonly StringBuilder _outputBuilder = new StringBuilder();        
 
         public FfmpegThumbnailCreatorExactLocation(ThumbnailSheetCreationService.Settings settings)
         {
@@ -30,20 +29,9 @@ namespace Hqv.MediaTools.ThumbnailSheet
             string outputFilepath)
         {
             var arguments = $"-i \"{request.VideoPath}\" -ss {currentPointInVideo} -vframes 1 {outputFilepath}";
-
-            var process = new Process
-            {
-                StartInfo = CreateProcessStartInfo(arguments)
-            };
-            process.OutputDataReceived += OutputHandler;
-            process.ErrorDataReceived += ErrorHandler;
-            process.Start();
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
-            process.WaitForExit();
-
-            // All outputs for FFmpeg goes to the error stream.
-            var errorInfo = _errorBuilder.ToString().Trim();
+            var app = new CommandLineApplication();
+            var result = app.Run(_settings.FfmpegPath, arguments);
+            var errorInfo = result.ErrorData.Trim();            
 
             // Success means that the thumbnail is created.
             if (File.Exists(outputFilepath)) return;
@@ -55,29 +43,6 @@ namespace Hqv.MediaTools.ThumbnailSheet
                 response.FfmpegErrorOutput = errorInfo;
                 throw new HqvException($"No thumbnail created using ffmpeg for {outputFilepath}");
             }
-        }
-
-        private ProcessStartInfo CreateProcessStartInfo(string arguments)
-        {
-            return new ProcessStartInfo
-            {
-                FileName = _settings.FfmpegPath,
-                Arguments = arguments,
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true
-            };
-        }
-
-        private void OutputHandler(object sender, DataReceivedEventArgs e)
-        {
-            _outputBuilder.AppendLine(e.Data);
-        }
-
-        private void ErrorHandler(object sender, DataReceivedEventArgs e)
-        {
-            _errorBuilder.AppendLine(e.Data);
-        }
+        }        
     }
 }

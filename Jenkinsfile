@@ -15,6 +15,10 @@ stage('compile') {
 stage('test') {
     node('windows') {
         unstash 'everything'
+		dir("Thumbnail.Tests") {
+            bat 'dotnet restore'
+            bat 'dotnet test --filter Category=Unit'
+        }
         dir("ThumbnailSheet.Tests") {
             bat 'dotnet restore'
             bat 'dotnet test --filter Category=Unit'
@@ -31,6 +35,9 @@ stage('publish') {
         unstash 'everything'
         bat 'del /S *.nupkg'
         dir("Types") {
+            bat 'dotnet pack --no-build -c Release'
+        }
+		dir("Thumbnail") {
             bat 'dotnet pack --no-build -c Release'
         }
         dir("ThumbnailSheet") {
