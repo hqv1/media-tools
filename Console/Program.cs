@@ -4,9 +4,9 @@ using System.Linq;
 using Autofac;
 using CommandLine;
 using Hqv.CSharp.Common.Audit;
-using Hqv.CSharp.Common.Audit.Logger;
-using Hqv.CSharp.Common.Log;
-using Hqv.CSharp.Common.Log.NLog;
+using Hqv.CSharp.Common.Audit.Logging;
+using Hqv.CSharp.Common.Logging;
+using Hqv.CSharp.Common.Logging.NLog;
 using Hqv.MediaTools.Console.Actors;
 using Hqv.MediaTools.ThumbnailSheet;
 using Hqv.MediaTools.Types.ThumbnailSheet;
@@ -46,7 +46,7 @@ namespace Hqv.MediaTools.Console
             catch (Exception ex)
             {
                 var logger = _iocContainer.Resolve<ILogger>();
-                logger.LogError("Fatal exception", ex);
+                logger.Error(ex, "Fatal exception");
                 System.Console.WriteLine($"Exception. See logs: {ex.Message}");
                 return 1;
             }
@@ -65,7 +65,7 @@ namespace Hqv.MediaTools.Console
             var exception = new Exception("Unable to parse command");
             exception.Data["args"] = string.Join("; ", args) + " --- ";
             exception.Data["errors"] = string.Join("; ", errs.Select(x=>x.Tag));
-            logger.LogError("Exiting programming", exception);
+            logger.Error(exception, "Exiting programming");
 
             return 0;
         }
@@ -90,8 +90,8 @@ namespace Hqv.MediaTools.Console
 
             builder.RegisterType<CreateThumbnailSheetActor>();
 
-            builder.RegisterType<BusinessAuditorResponseBase>().As<IAuditorResponseBase>();
-            builder.RegisterInstance(new BusinessAuditorResponseBase.Settings(
+            builder.RegisterType<AuditorResponseBase>().As<IAuditorResponseBase>();
+            builder.RegisterInstance(new AuditorResponseBase.Settings(
                 Convert.ToBoolean(_config["auditing:audit-on-successful-event"]),
                 Convert.ToBoolean(_config["auditing:detail-audit-on-successful-event"])));
             
