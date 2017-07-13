@@ -8,12 +8,12 @@
     <Authors>Hqv</Authors>
     <Product>Hqv</Product>
     <Description>Interfaces, Entities, and other classes for MediaTools. Does not contain any implemention of the services.</Description>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="7.1.0" />
-    <PackageReference Include="Hqv.CSharp.Common" Version="0.1.2" />
+    <PackageReference Include="Hqv.CSharp.Common" Version="0.2.0" />
   </ItemGroup>
 
 </Project>
