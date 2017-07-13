@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
+    <PackageReference Include="Hqv.CSharp.Common.App" Version="0.2.1" />
   </ItemGroup>
 
   <ItemGroup>

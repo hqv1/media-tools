@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hqv.CSharp.Common.App" Version="0.2.1" />
     <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="7.0.6.101" />
     <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
     <PackageReference Include="System.Threading.Tasks.Parallel" Version="4.3.0" />

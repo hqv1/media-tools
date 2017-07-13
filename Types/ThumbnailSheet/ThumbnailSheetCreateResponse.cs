@@ -12,15 +12,10 @@ namespace Hqv.MediaTools.Types.ThumbnailSheet
         /// </summary>
         /// <param name="request">Original request</param>
         public ThumbnailSheetCreateResponse(ThumbnailSheetCreateRequest request)
-        {
-            Request = request;
+            :base(request)
+        {            
         }
-
-        /// <summary>
-        /// Original request
-        /// </summary>
-        public ThumbnailSheetCreateRequest Request { get; }        
-
+        
         /// <summary>
         /// Path to the created thumbnail sheet
         /// </summary>

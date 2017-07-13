@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using Hqv.CSharp.Common.App;
 using Hqv.CSharp.Common.Exceptions;
 using Hqv.MediaTools.Types.VideoFileInfo;
 using Newtonsoft.Json.Linq;
@@ -114,68 +115,36 @@ namespace Hqv.MediaTools.VideoFileInfo
 
         private void ExtractTry(VideoFileInfoExtractRequest request)
         {
-            RunFfprobe(request);
-            var json = GetJsonFromFfprobeResult();
+            var ffprobeResult = RunFfprobe(request);
+            var json = GetJsonFromFfprobeResult(ffprobeResult);
             _response.VideoFileInformation = _ffprobeResultParser.Parse(json);
         }
 
-        private void RunFfprobe(VideoFileInfoExtractRequest request)
+        private CommandLineResult RunFfprobe(VideoFileInfoExtractRequest request)
         {
             var arguments = $"-v quiet -print_format json -show_format -show_streams \"{request.VideoFilePath}\"";
             _response.FfprobeArguments = arguments;
-            var process = new Process
-            {
-                StartInfo = CreateProcessStartInfo(arguments)
-            };
-            process.OutputDataReceived += OutputHandler;
-            process.ErrorDataReceived += ErrorHandler;
-            process.Start();
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
-            process.WaitForExit();
-        }
 
-        private ProcessStartInfo CreateProcessStartInfo(string arguments)
-        {
-            return new ProcessStartInfo
-            {
-                FileName = _settings.FfprobePath,
-                Arguments = arguments,
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true
-            };
-        }
-
-        private void ErrorHandler(object sender, DataReceivedEventArgs e)
-        {
-            _errorBuilder.AppendLine(e.Data);
-        }
-
-        private void OutputHandler(object sender, DataReceivedEventArgs e)
-        {
-            _outputBuilder.AppendLine(e.Data);
+            var app = new CommandLineApplication();
+            return app.Run(_settings.FfprobePath, arguments);            
         }        
 
-        private JObject GetJsonFromFfprobeResult()
-        {
-            var errorInfo = _errorBuilder.ToString().Trim();
-            var outputInfo = _outputBuilder.ToString().Trim();
-            _response.FfprobeOutput = outputInfo;
-            if (!string.IsNullOrEmpty(errorInfo))
+        private JObject GetJsonFromFfprobeResult(CommandLineResult ffprobeResult)
+        {       
+            _response.FfprobeOutput = ffprobeResult.OutputData;
+            if (!string.IsNullOrEmpty(ffprobeResult.ErrorData))
             {
                 var exception = new HqvException("Error message from FFprobe");
-                exception.Data["error-stream"] = errorInfo;
+                exception.Data["error-stream"] = ffprobeResult.ErrorData;
                 throw exception;
             }
 
-            if (string.IsNullOrEmpty(outputInfo))
+            if (string.IsNullOrEmpty(ffprobeResult.OutputData))
             {
                 throw new HqvException("No output message from FFprobe");
             }
 
-            return JObject.Parse(outputInfo);
+            return JObject.Parse(ffprobeResult.OutputData);
         }       
     }
 }

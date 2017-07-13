@@ -9,18 +9,15 @@ namespace Hqv.MediaTools.Types.VideoFileInfo
     public class VideoFileInfoExtractResponse : ResponseBase
     {
         public VideoFileInfoExtractResponse(VideoFileInfoExtractRequest request)
-        {
-            Request = request;
+            :base(request)
+        {           
         }
-
-        /// <summary>
-        /// Original request
-        /// </summary>
-        public VideoFileInfoExtractRequest Request { get; }
-
+        
         /// <summary>
         /// Video file information
         /// </summary>
         public VideoFileInformationEntity VideoFileInformation { get; set; }
+
+        
     }
 }

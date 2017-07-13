@@ -1,10 +1,14 @@
+using System;
+using Hqv.CSharp.Common.Components;
+
 namespace Hqv.MediaTools.Types.ThumbnailSheet
 {
-    public class ThumbnailSheetCreateRequest
+    public class ThumbnailSheetCreateRequest : RequestBase
     {
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="correlationId">Correlation id</param>
         /// <param name="videoPath">Video path</param>
         /// <param name="sheetName">Sheet name</param>
         /// <param name="numberOfThumbnails">Number of thumbnails</param>
@@ -13,7 +17,7 @@ namespace Hqv.MediaTools.Types.ThumbnailSheet
         /// <param name="sheetQuality">Quality of the outputed JPG</param>
         /// <param name="sheetTitleFontSize">Font size of the thumbnail sheet title.</param>
         /// <param name="thumbnailWidth">The width of each thumbnail.</param>
-        public ThumbnailSheetCreateRequest(
+        public ThumbnailSheetCreateRequest(            
             string videoPath,
             string sheetName,
             int numberOfThumbnails,
@@ -21,7 +25,9 @@ namespace Hqv.MediaTools.Types.ThumbnailSheet
             bool shouldAddTimestamps = true,
             int sheetQuality = 80,
             int sheetTitleFontSize = 12,
-            int thumbnailWidth = 320)
+            int thumbnailWidth = 320,
+            string correlationId = null)
+            : base(correlationId?? Guid.NewGuid().ToString())
         {
             VideoPath = videoPath;
             SheetName = sheetName;

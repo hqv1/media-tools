@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using Hqv.MediaTools.Types;
 using Hqv.MediaTools.Types.VideoFileInfo;
 using Hqv.MediaTools.VideoFileInfo;
@@ -41,7 +42,7 @@ namespace Hqv.VideoFileInfo.Tests
 
         private void GivenAVideoFile()
         {
-            _request = new VideoFileInfoExtractRequest(VideoFilePathValid);
+            _request = new VideoFileInfoExtractRequest(Guid.NewGuid().ToString(), VideoFilePathValid);
         }
 
         private void WhenTheServiceIsCalled()
