@@ -27,12 +27,13 @@ namespace Hqv.MediaTools.Console.Actors
             _videoFileInfoExtractionService = videoFileInfoExtractionService;
         }
 
-        public void Act(CreateThumbnailSheetOptions options)
+        public int Act(CreateThumbnailSheetOptions options)
         {
             _correlationId = Guid.NewGuid().ToString();
             var videoFileInfoExtractResponse = ExtractVideoFileInformation(options);
-            if (!videoFileInfoExtractResponse.IsValid) return;
-            CreateThumbnailSheet(options, videoFileInfoExtractResponse.VideoFileInformation);
+            if (!videoFileInfoExtractResponse.IsValid) return 1;
+            var thumbnailSheetCreateResponse = CreateThumbnailSheet(options, videoFileInfoExtractResponse.VideoFileInformation);
+            return thumbnailSheetCreateResponse.IsValid ? 0 : 1;
         }
 
 
@@ -51,7 +52,7 @@ namespace Hqv.MediaTools.Console.Actors
             return response;
         }
 
-        private void CreateThumbnailSheet(CreateThumbnailSheetOptions options, VideoFileInformationEntity videoFileInformation)
+        private ThumbnailSheetCreateResponse CreateThumbnailSheet(CreateThumbnailSheetOptions options, VideoFileInformationEntity videoFileInformation)
         {
             var request = new ThumbnailSheetCreateRequest(
                 videoPath:options.VideoFilePath,
@@ -68,6 +69,7 @@ namespace Hqv.MediaTools.Console.Actors
             {
                 _auditor.AuditFailure("VideoFile", options.VideoFilePath, "ThumbnailSheetCreationFailed", response);
             }
+            return response;
         }
     }
 }

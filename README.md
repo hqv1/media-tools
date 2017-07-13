@@ -10,7 +10,9 @@ Get video file information (duration, video stream, etc...) from a video file.
 
 # Console application
 
-You can create thumbnail sheets using the console application.
+The console app can do two things
+* Create thumbnails every *x* seconds from a video file
+* Create a thumbnail sheet
 
 To build the console app...
 * Clone or download the project
@@ -36,6 +38,9 @@ The nuget feeds will have the latest builds. So you can use the nuget packages, 
 
 ## Types
 Contains interfaces, entities, and other common files. Reference this library when you only need the interfaces and not the implemention. 
+
+## Thumbnail
+Create a thumbnail every *x* seconds for a video file. The process doesn't seem to be very accurate, but you'll get thumbnails.
 
 ## ThumbnailSheet
 Create a thumbnail sheet. Requires FFmpeg to be on your system. You can download from [FFmpeg][ffmpeg-url]{:target="_blank"}. 

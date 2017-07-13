@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using FluentValidation;
 using Hqv.CSharp.Common.App;
 using Hqv.CSharp.Common.Exceptions;
 using Hqv.MediaTools.Types.Thumbnail;
-using Hqv.MediaTools.Types.VideoFileInfo;
 
 namespace Hqv.MediaTools.Thumbnail
 {
@@ -27,17 +27,38 @@ namespace Hqv.MediaTools.Thumbnail
 
         public class Settings
         {
-            public Settings(string tempThumbnailPath, string ffmpegPath)
+            public Settings(string thumbnailPath, string ffmpegPath)
             {
-                TempThumbnailPath = tempThumbnailPath;
+                ThumbnailPath = thumbnailPath;
                 FfmpegPath = ffmpegPath;
 
+                Validate();
             }
-            public string TempThumbnailPath { get; }
+            public string ThumbnailPath { get; }
             /// <summary>
             /// FFmpeg path
             /// </summary>
             public string FfmpegPath { get; }
+
+            private void Validate()
+            {
+                var validator = new SettingsValidator();
+                var validationResult = validator.Validate(this);
+                if (validationResult.IsValid) return;
+
+                var exception = new HqvException("Validation failed");
+                exception.Data["errors"] = validationResult.Errors;
+                throw exception;
+            }
+        }
+
+        public class SettingsValidator : AbstractValidator<Settings>
+        {
+            public SettingsValidator()
+            {
+                RuleFor(x => x.ThumbnailPath).Must(Directory.Exists);
+                RuleFor(x => x.FfmpegPath).Must(File.Exists);                
+            }
         }
 
         public class Response : ThumbnailCreateResponse
@@ -85,7 +106,7 @@ namespace Hqv.MediaTools.Thumbnail
         {
             CleanupPreviousFiles();
             var filename = Path.GetFileNameWithoutExtension(_request.VideoPath);
-            var outputPath = Path.Combine(_settings.TempThumbnailPath, filename + "-%03d.jpg");
+            var outputPath = Path.Combine(_settings.ThumbnailPath, filename + "-%03d.jpg");
             var arguments = $"-i \"{_request.VideoPath}\" -vf fps=1/{_request.GetThumbnailEveryNSeconds} \"{outputPath}\"";
             _response.FfmpegArguments = arguments;
 
@@ -101,7 +122,7 @@ namespace Hqv.MediaTools.Thumbnail
         private void CleanupPreviousFiles()
         {
             var filename = Path.GetFileNameWithoutExtension(_request.VideoPath);            
-            var previousFiles = Directory.GetFiles(_settings.TempThumbnailPath, filename+ "*.jpg");
+            var previousFiles = Directory.GetFiles(_settings.ThumbnailPath, filename+ "*.jpg");
             foreach (var file in previousFiles)
             {
                 File.Delete(file);
@@ -111,7 +132,7 @@ namespace Hqv.MediaTools.Thumbnail
         private bool AnyCreatedFile()
         {
             var filename = Path.GetFileNameWithoutExtension(_request.VideoPath);
-            return Directory.GetFiles(_settings.TempThumbnailPath, filename + "*.jpg").Any();
+            return Directory.GetFiles(_settings.ThumbnailPath, filename + "*.jpg").Any();
         }
     }
 }

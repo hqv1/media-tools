@@ -8,7 +8,7 @@
     <Company>Hqv</Company>
     <Product>Hqv</Product>
     <Description>Create thumbnails</Description>
-    <Version>1.0.1</Version>
+    <Version>1.0.3</Version>
   </PropertyGroup>
 
   <ItemGroup>
