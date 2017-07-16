@@ -8,11 +8,11 @@
     <Company>Hqv</Company>
     <Product>Hqv</Product>
     <Description>Create thumbnail sheet using FFmpeg and MagickImage. You'll need to obtain FFmpeg from http://ffmpeg.org/download.html.</Description>
-    <Version>1.0.1</Version>
+    <Version>1.0.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hqv.CSharp.Common.App" Version="0.2.1" />
+    <PackageReference Include="Hqv.CSharp.Common.App" Version="0.2.3" />
     <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="7.0.6.101" />
     <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
     <PackageReference Include="System.Threading.Tasks.Parallel" Version="4.3.0" />

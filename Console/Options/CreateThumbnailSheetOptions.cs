@@ -1,6 +1,6 @@
 ﻿using CommandLine;
 
-namespace Hqv.MediaTools.Console
+namespace Hqv.MediaTools.Console.Options
 {
     /// <summary>
     /// Used by command line library (https://github.com/gsscoder/commandline).

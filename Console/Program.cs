@@ -8,8 +8,11 @@ using Hqv.CSharp.Common.Audit.Logging;
 using Hqv.CSharp.Common.Logging;
 using Hqv.CSharp.Common.Logging.NLog;
 using Hqv.MediaTools.Console.Actors;
+using Hqv.MediaTools.Console.Options;
+using Hqv.MediaTools.FileDownload;
 using Hqv.MediaTools.Thumbnail;
 using Hqv.MediaTools.ThumbnailSheet;
+using Hqv.MediaTools.Types.FileDownload;
 using Hqv.MediaTools.Types.Thumbnail;
 using Hqv.MediaTools.Types.ThumbnailSheet;
 using Hqv.MediaTools.Types.VideoFileInfo;
@@ -39,43 +42,35 @@ namespace Hqv.MediaTools.Console
 
             try
             {
-                return Parser.Default.ParseArguments<CreateThumbnailsOptions, CreateThumbnailSheetOptions>(args)
+                return Parser.Default.ParseArguments<
+                    CreateThumbnailsOptions, 
+                    CreateThumbnailSheetOptions,
+                    DownloadFileOptions>(args)
                     .MapResult(
-                        (CreateThumbnailsOptions opts) => CreateThumbnails(opts),
-                        (CreateThumbnailSheetOptions opts) => CreateThumbnailSheet(opts),
+                        (CreateThumbnailsOptions opts) => _iocContainer.Resolve<CreateThumbnailsActor>().Act(opts),
+                        (CreateThumbnailSheetOptions opts) => _iocContainer.Resolve<CreateThumbnailSheetActor>().Act(opts),
+                        (DownloadFileOptions opts) => _iocContainer.Resolve<DownloadFileActor>().Act(opts),
                         errs=>ProcessError(errs, args)
                     );
             }
             catch (Exception ex)
             {
-                var logger = _iocContainer.Resolve<ILogger>();
+                var logger = _iocContainer.Resolve<IHqvLogger>();
                 logger.Error(ex, "Fatal exception");
                 System.Console.WriteLine($"Exception. See logs: {ex.Message}");
                 return 1;
             }
         }
 
-        private static int CreateThumbnails(CreateThumbnailsOptions opts)
-        {
-            var actor = _iocContainer.Resolve<CreateThumbnailsActor>();
-            return actor.Act(opts);
-        }
-
-        private static int CreateThumbnailSheet(CreateThumbnailSheetOptions opts)
-        {
-            var actor = _iocContainer.Resolve<CreateThumbnailSheetActor>();
-            return actor.Act(opts);
-        }
-
         private static int ProcessError(IEnumerable<Error> errs, string[] args)
         {
-            var logger = _iocContainer.Resolve<ILogger>();            
+            var logger = _iocContainer.Resolve<IHqvLogger>();            
             var exception = new Exception("Unable to parse command");
             exception.Data["args"] = string.Join("; ", args) + " --- ";
             exception.Data["errors"] = string.Join("; ", errs.Select(x=>x.Tag));
             logger.Error(exception, "Exiting programming");
 
-            return 0;
+            return 1;
         }
 
         private static void GetConfigurationRoot()
@@ -93,16 +88,22 @@ namespace Hqv.MediaTools.Console
             var builder = new ContainerBuilder();
             builder.RegisterInstance(_config).As<IConfiguration>();
 
-            builder.RegisterType<Logger>().As<ILogger>();
+            builder.RegisterType<Logger>().As<IHqvLogger>();
             builder.Register(x => NLog.LogManager.GetLogger("console")).As<NLog.ILogger>();
 
             builder.RegisterType<CreateThumbnailsActor>();
             builder.RegisterType<CreateThumbnailSheetActor>();
+            builder.RegisterType<DownloadFileActor>();
 
             builder.RegisterType<AuditorResponseBase>().As<IAuditorResponseBase>();
             builder.RegisterInstance(new AuditorResponseBase.Settings(
                 Convert.ToBoolean(_config["auditing:audit-on-successful-event"]),
                 Convert.ToBoolean(_config["auditing:detail-audit-on-successful-event"])));
+
+            builder.RegisterType<FileDownloaderService>().As<IFileDownloaderService>();
+            builder.RegisterInstance(new FileDownloaderService.Settings(
+                _config["ffmpeg-path"],
+                _config["file-downloader:save-path"]));
 
             builder.RegisterType<ThumbnailCreationNotAccurateService>().As<IThumbnailCreationService>();
             builder.RegisterInstance(new ThumbnailCreationNotAccurateService.Settings(

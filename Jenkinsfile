@@ -37,6 +37,9 @@ stage('publish') {
         dir("Types") {
             bat 'dotnet pack --no-build -c Release'
         }
+		dir("FileDownload") {
+            bat 'dotnet pack --no-build -c Release'
+        }
 		dir("Thumbnail") {
             bat 'dotnet pack --no-build -c Release'
         }

@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thumbnail", "Thumbnail\Thum
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thumbnail.Tests", "Thumbnail.Tests\Thumbnail.Tests.csproj", "{7473BF5A-5F2A-4506-8614-7043B9D1822F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileDownload", "FileDownload\FileDownload.csproj", "{14046B57-0E0F-40A2-8855-379CAA333010}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{7473BF5A-5F2A-4506-8614-7043B9D1822F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7473BF5A-5F2A-4506-8614-7043B9D1822F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7473BF5A-5F2A-4506-8614-7043B9D1822F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14046B57-0E0F-40A2-8855-379CAA333010}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14046B57-0E0F-40A2-8855-379CAA333010}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14046B57-0E0F-40A2-8855-379CAA333010}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14046B57-0E0F-40A2-8855-379CAA333010}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

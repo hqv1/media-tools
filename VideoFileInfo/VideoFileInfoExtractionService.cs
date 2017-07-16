@@ -120,7 +120,7 @@ namespace Hqv.MediaTools.VideoFileInfo
             _response.VideoFileInformation = _ffprobeResultParser.Parse(json);
         }
 
-        private CommandLineResult RunFfprobe(VideoFileInfoExtractRequest request)
+        private ProcessResult RunFfprobe(VideoFileInfoExtractRequest request)
         {
             var arguments = $"-v quiet -print_format json -show_format -show_streams \"{request.VideoFilePath}\"";
             _response.FfprobeArguments = arguments;
@@ -129,7 +129,7 @@ namespace Hqv.MediaTools.VideoFileInfo
             return app.Run(_settings.FfprobePath, arguments);            
         }        
 
-        private JObject GetJsonFromFfprobeResult(CommandLineResult ffprobeResult)
+        private JObject GetJsonFromFfprobeResult(ProcessResult ffprobeResult)
         {       
             _response.FfprobeOutput = ffprobeResult.OutputData;
             if (!string.IsNullOrEmpty(ffprobeResult.ErrorData))

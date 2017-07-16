@@ -10,24 +10,25 @@
     <Company>Hqv</Company>    
     <Product>Hqv</Product>    
     <Description>Console to create thumbnail sheets</Description>    
-    <Version>1.0.3</Version>    
-    <AssemblyVersion>1.0.3.0</AssemblyVersion>    
-    <FileVersion>1.0.3.0</FileVersion>
+    <Version>1.0.4</Version>    
+    <AssemblyVersion>1.0.4.0</AssemblyVersion>    
+    <FileVersion>1.0.4.0</FileVersion>
   </PropertyGroup>
   
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.6.0" />
     <PackageReference Include="AutoMapper" Version="6.1.0" />
     <PackageReference Include="CommandLineParser" Version="2.1.1-beta" />
-    <PackageReference Include="Hqv.CSharp.Common" Version="0.2.2" />
-    <PackageReference Include="Hqv.CSharp.Common.Audit.Logging" Version="0.2.2" />
-    <PackageReference Include="Hqv.CSharp.Common.Logging.NLog" Version="0.2.0" />
+    <PackageReference Include="Hqv.CSharp.Common" Version="0.2.4" />
+    <PackageReference Include="Hqv.CSharp.Common.Audit.Logging" Version="0.2.4" />
+    <PackageReference Include="Hqv.CSharp.Common.Logging.NLog" Version="0.2.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.0-preview1-final" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.2" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.0.0-rtm-beta5" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FileDownload\FileDownload.csproj" />
     <ProjectReference Include="..\ThumbnailSheet\ThumbnailSheet.csproj" />
     <ProjectReference Include="..\Thumbnail\Thumbnail.csproj" />
     <ProjectReference Include="..\Types\Types.csproj" />

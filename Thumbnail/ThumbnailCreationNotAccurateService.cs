@@ -4,6 +4,7 @@ using System.Linq;
 using FluentValidation;
 using Hqv.CSharp.Common.App;
 using Hqv.CSharp.Common.Exceptions;
+using Hqv.CSharp.Common.Validations;
 using Hqv.MediaTools.Types.Thumbnail;
 
 namespace Hqv.MediaTools.Thumbnail
@@ -32,24 +33,13 @@ namespace Hqv.MediaTools.Thumbnail
                 ThumbnailPath = thumbnailPath;
                 FfmpegPath = ffmpegPath;
 
-                Validate();
+                Validator.Validate<Settings, SettingsValidator>(this);
             }
             public string ThumbnailPath { get; }
             /// <summary>
             /// FFmpeg path
             /// </summary>
-            public string FfmpegPath { get; }
-
-            private void Validate()
-            {
-                var validator = new SettingsValidator();
-                var validationResult = validator.Validate(this);
-                if (validationResult.IsValid) return;
-
-                var exception = new HqvException("Validation failed");
-                exception.Data["errors"] = validationResult.Errors;
-                throw exception;
-            }
+            public string FfmpegPath { get; }            
         }
 
         public class SettingsValidator : AbstractValidator<Settings>
