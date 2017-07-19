@@ -44,7 +44,7 @@ namespace Hqv.MediaTools.FileDownload
             public SettingsValidator()
             {
                 RuleFor(x => x.SavePath).Must(Directory.Exists);
-                RuleFor(x => x.FfmpegPath).Must(File.Exists);
+                //RuleFor(x => x.FfmpegPath).Must(File.Exists);
             }
         }
 
