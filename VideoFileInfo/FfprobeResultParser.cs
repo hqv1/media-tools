@@ -24,7 +24,7 @@ namespace Hqv.MediaTools.VideoFileInfo
 
             dynamic audioStream = json["streams"].FirstOrDefault(x => x["codec_type"].Value<string>() == "audio");
 
-            var path = format.file_name;
+            string path = format.filename;
             var filename = Path.GetFileNameWithoutExtension(path);
             var extension = Path.GetExtension(path);
 
