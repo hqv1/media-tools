@@ -19,12 +19,13 @@
     <PackageReference Include="Autofac" Version="4.6.0" />
     <PackageReference Include="AutoMapper" Version="6.1.0" />
     <PackageReference Include="CommandLineParser" Version="2.1.1-beta" />
-    <PackageReference Include="Hqv.CSharp.Common" Version="0.2.4" />
-    <PackageReference Include="Hqv.CSharp.Common.Audit.Logging" Version="0.2.4" />
-    <PackageReference Include="Hqv.CSharp.Common.Logging.NLog" Version="0.2.4" />
+    <PackageReference Include="Hqv.CSharp.Common" Version="0.2.6" />
+    <PackageReference Include="Hqv.CSharp.Common.Audit.Logging" Version="0.2.5" />
+    <PackageReference Include="Hqv.CSharp.Common.Logging.Serilog" Version="0.2.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.0-preview1-final" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.2" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="1.0.0-rtm-beta5" />
+    <PackageReference Include="Serilog" Version="2.5.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="3.2.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,9 +38,6 @@
 
   <ItemGroup>
     <None Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -3,32 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 using CommandLine;
-using Hqv.CSharp.Common.Audit;
-using Hqv.CSharp.Common.Audit.Logging;
 using Hqv.CSharp.Common.Logging;
-using Hqv.CSharp.Common.Logging.NLog;
 using Hqv.MediaTools.Console.Actors;
 using Hqv.MediaTools.Console.Options;
-using Hqv.MediaTools.FileDownload;
-using Hqv.MediaTools.Thumbnail;
-using Hqv.MediaTools.ThumbnailSheet;
-using Hqv.MediaTools.Types.FileDownload;
-using Hqv.MediaTools.Types.Thumbnail;
-using Hqv.MediaTools.Types.ThumbnailSheet;
-using Hqv.MediaTools.Types.VideoFileInfo;
-using Hqv.MediaTools.VideoFileInfo;
 using Microsoft.Extensions.Configuration;
 
 namespace Hqv.MediaTools.Console
 {
     /// <summary>
-    /// Creates a thumbnail sheet.
+    /// This application can do the following.
+    /// Create thumbnails every X seconds    
+    /// Create a thumbnail sheet.
+    /// Download a file using FFmpeg
     /// 
-    /// Use IVideoFileInfoExtractionService to extract the video file information. The only data we're looking for is 
-    /// the duration. Then use IThumbnailSheetCreationService to create the thumbnail sheet.
+    /// Run the command line to see all the options available to it.
+    /// Configuration are stored in appsettings.json
+    /// Errors are logged into a log file.
     /// 
-    /// This console apps logs to a file on success and errors. You can configure the logs in appsettings.json and in 
-    /// nlog.config.
     /// </summary>
     internal class Program
     {
@@ -38,7 +29,7 @@ namespace Hqv.MediaTools.Console
         private static int Main(string[] args)
         {
             GetConfigurationRoot();
-            RegisterComponents();
+            _iocContainer = Ioc.RegisterComponents(_config);
 
             try
             {
@@ -78,49 +69,6 @@ namespace Hqv.MediaTools.Console
             _config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional:false, reloadOnChange:true)                
                 .Build();
-        }
-
-        /// <summary>
-        /// IOC container using Autofac (https://autofac.org/)
-        /// </summary>
-        private static void RegisterComponents()
-        {
-            var builder = new ContainerBuilder();
-            builder.RegisterInstance(_config).As<IConfiguration>();
-
-            builder.RegisterType<Logger>().As<IHqvLogger>();
-            builder.Register(x => NLog.LogManager.GetLogger("console")).As<NLog.ILogger>();
-
-            builder.RegisterType<CreateThumbnailsActor>();
-            builder.RegisterType<CreateThumbnailSheetActor>();
-            builder.RegisterType<DownloadFileActor>();
-
-            builder.RegisterType<AuditorResponseBase>().As<IAuditorResponseBase>();
-            builder.RegisterInstance(new AuditorResponseBase.Settings(
-                Convert.ToBoolean(_config["auditing:audit-on-successful-event"]),
-                Convert.ToBoolean(_config["auditing:detail-audit-on-successful-event"])));
-
-            builder.RegisterType<FileDownloaderService>().As<IFileDownloaderService>();
-            builder.RegisterInstance(new FileDownloaderService.Settings(
-                _config["ffmpeg-path"],
-                _config["file-downloader:save-path"]));
-
-            builder.RegisterType<ThumbnailCreationNotAccurateService>().As<IThumbnailCreationService>();
-            builder.RegisterInstance(new ThumbnailCreationNotAccurateService.Settings(
-                _config["thumbnail:thumbnail-path"],
-                _config["ffmpeg-path"]));
-
-            builder.RegisterType<ThumbnailSheetCreationService>().As<IThumbnailSheetCreationService>();
-            builder.RegisterInstance(new ThumbnailSheetCreationService.Settings(
-                _config["thumbnailsheet:thumbnail-path-temp"],
-                _config["thumbnailsheet:sheet-path"],
-                _config["ffmpeg-path"]));
-
-            builder.RegisterType<VideoFileInfoExtractionService>().As<IVideoFileInfoExtractionService>();
-            builder.RegisterInstance(new VideoFileInfoExtractionService.Settings(
-                _config["ffprobe-path"]));
-            
-            _iocContainer = builder.Build();
-        }        
+        }       
     }
 }
