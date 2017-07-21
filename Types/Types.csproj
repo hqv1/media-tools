@@ -8,7 +8,7 @@
     <Authors>Hqv</Authors>
     <Product>Hqv</Product>
     <Description>Interfaces, Entities, and other classes for MediaTools. Does not contain any implemention of the services.</Description>
-    <Version>1.0.4</Version>
+    <Version>1.0.6</Version>
   </PropertyGroup>
 
   <ItemGroup>

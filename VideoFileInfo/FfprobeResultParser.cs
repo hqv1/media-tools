@@ -1,14 +1,14 @@
 using System.IO;
 using System.Linq;
 using Hqv.CSharp.Common.Exceptions;
-using Hqv.MediaTools.Types.Entities;
+using Hqv.MediaTools.Types.Models;
 using Newtonsoft.Json.Linq;
 
 namespace Hqv.MediaTools.VideoFileInfo
 {
     internal class FfprobeResultParser
     {
-        public VideoFileInformationEntity Parse(JObject json)
+        public VideoFileInformationModel Parse(JObject json)
         {
             dynamic videoStream = json["streams"].FirstOrDefault(x => x["codec_type"].Value<string>() == "video");
             if (videoStream == null)
@@ -28,58 +28,35 @@ namespace Hqv.MediaTools.VideoFileInfo
             var filename = Path.GetFileNameWithoutExtension(path);
             var extension = Path.GetExtension(path);
 
-            var formatName = format.format_name;
-            var bitRate = format.bit_rate;
-            var filesize = format.size;
+            string formatName = format.format_name;
+            string bitRate = format.bit_rate;
+            long filesize = format.size;
             double duration = format.duration;
 
 
-            var videoFile = new VideoFileInformationEntity
-            {
-                FullPath = path,
-                Filename = filename,
-                Extension = extension,
-                FormatName = formatName,
-                BitRate = bitRate,
-                FileSize = filesize,
-                DurationInSecs = duration,
-
-                VideoStream = GetVideoStream(videoStream),
-                AudioStream = GetAudioStream(audioStream)
-            };
+            var videoFile = new VideoFileInformationModel(path, filename, extension, formatName, bitRate, filesize,
+                duration, GetVideoStream(videoStream), GetAudioStream(audioStream));            
             return videoFile;
         }
 
-        private static VideoStreamEntity GetVideoStream(dynamic videoStream)
+        private static VideoStreamModel GetVideoStream(dynamic videoStream)
         {
-            var width = videoStream.width;
-            var height = videoStream.height;
+            int width = videoStream.width;
+            int height = videoStream.height;            
+            string codecName = videoStream.codec_name;
             double startTime = videoStream.start_time;
-            var codecName = videoStream.codec_name;
 
-            return new VideoStreamEntity
-            {
-                Width = width,
-                Height = height,
-                StartTime = startTime,
-                CodecName = codecName,
-            };
+            return new VideoStreamModel(width, height, codecName, startTime);
         }
 
-        private static AudioStreamEntity GetAudioStream(dynamic audioStream)
+        private static AudioStreamModel GetAudioStream(dynamic audioStream)
         {
-            var codecName = audioStream.codec_name;
+            string codecName = audioStream.codec_name;
             double startTime = audioStream.start_time;
             int channels = audioStream.channels;
-            var channelLayout = audioStream.channel_layout;
+            string channelLayout = audioStream.channel_layout;
 
-            return new AudioStreamEntity
-            {
-                CodecName = codecName,
-                StartTime = startTime,
-                Channels = channels,
-                ChannelLayout = channelLayout
-            };
+            return new AudioStreamModel(codecName, startTime, channels, channelLayout);
         }
     }
 }

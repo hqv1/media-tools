@@ -1,5 +1,5 @@
 ﻿using Hqv.CSharp.Common.Components;
-using Hqv.MediaTools.Types.Entities;
+using Hqv.MediaTools.Types.Models;
 
 namespace Hqv.MediaTools.Types.VideoFileInfo
 {
@@ -16,7 +16,7 @@ namespace Hqv.MediaTools.Types.VideoFileInfo
         /// <summary>
         /// Video file information
         /// </summary>
-        public VideoFileInformationEntity VideoFileInformation { get; set; }
+        public VideoFileInformationModel VideoFileInformation { get; set; }
 
         
     }

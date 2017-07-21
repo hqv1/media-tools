@@ -2,7 +2,7 @@
 using System.IO;
 using Hqv.CSharp.Common.Audit;
 using Hqv.MediaTools.Console.Options;
-using Hqv.MediaTools.Types.Entities;
+using Hqv.MediaTools.Types.Models;
 using Hqv.MediaTools.Types.ThumbnailSheet;
 using Hqv.MediaTools.Types.VideoFileInfo;
 
@@ -53,7 +53,7 @@ namespace Hqv.MediaTools.Console.Actors
             return response;
         }
 
-        private ThumbnailSheetCreateResponse CreateThumbnailSheet(CreateThumbnailSheetOptions options, VideoFileInformationEntity videoFileInformation)
+        private ThumbnailSheetCreateResponse CreateThumbnailSheet(CreateThumbnailSheetOptions options, VideoFileInformationModel videoFileInformation)
         {
             var request = new ThumbnailSheetCreateRequest(
                 videoPath:options.VideoFilePath,
