@@ -6,7 +6,8 @@ stage('compile') {
     node('windows') {
         checkout scm //git 'https://github.com/hqv1/media-tools.git'
         bat 'dotnet clean'
-        bat 'dotnet restore'        
+        bat 'dotnet restore'     
+		bat 'dotnet msbuild /t:restore'
 		bat 'dotnet build -c Release' //bat 'dotnet msbuild /p:Configuration=Release'
         stash 'everything'
     }
