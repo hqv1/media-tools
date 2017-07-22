@@ -31,7 +31,18 @@ stage('test') {
     }
 }
 
-stage('publish') {
+stage('publish_framework') {
+    node('windows') {
+        unstash 'everything'                
+		dir("ThumbnailSheet.Framework") {
+            bat "${nuget_path} pack ThumbnailSheet.Framework.csproj -Prop Configuration=Release"
+			bat "${nuget_path} push **\\Hqv.MediaTools.ThumbnailSheet.Framework.*.nupkg ${nuget_server_key} -Source ${nuget_server}"
+			archiveArtifacts '**\\*.nupkg'
+        }                
+    }
+}
+
+stage('publish_core') {
     node('windows') {
         unstash 'everything'
         bat 'del /S *.nupkg'
@@ -46,10 +57,7 @@ stage('publish') {
         }
         dir("ThumbnailSheet") {
             bat 'dotnet pack --no-build -c Release'
-        }
-		dir("ThumbnailSheet.Framework") {
-            bat "${nuget_path} pack ThumbnailSheet.Framework.csproj -Prop Configuration=Release"
-        }
+        }		
         dir("VideoFileInfo") {
             bat 'dotnet pack --no-build -c Release'
         }
