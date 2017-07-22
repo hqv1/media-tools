@@ -47,6 +47,9 @@ stage('publish') {
         dir("ThumbnailSheet") {
             bat 'dotnet pack --no-build -c Release'
         }
+		dir("ThumbnailSheet.Framework") {
+            bat "${nuget_path} pack ThumbnailSheet.Framework.csproj -Prop Configuration=Release"
+        }
         dir("VideoFileInfo") {
             bat 'dotnet pack --no-build -c Release'
         }
