@@ -7,7 +7,7 @@ stage('compile') {
         checkout scm //git 'https://github.com/hqv1/media-tools.git'
         bat 'dotnet clean'
         bat 'dotnet restore'        
-		bat 'dotnet msbuild /p:Configuration=Release' //bat 'dotnet build -c Release'
+		bat 'dotnet build -c Release' //bat 'dotnet msbuild /p:Configuration=Release'
         stash 'everything'
     }
 }
