@@ -16,7 +16,7 @@ namespace Hqv.VideoFileInfo.Tests
         // Path to FFProbe
         private const string FfprobePath = @"C:\Apps\ffmpeg\bin\ffprobe.exe";
         // Video file to extract
-        private const string VideoFilePathValid = @"C:\Temp\Black_Panther_Teaser_Trailer.webm";
+        private const string VideoFilePathValid = @"C:\Workspace\media-tools-space\test-files\JLT.mp4";
 
         private VideoFileInfoExtractRequest _request;
         private readonly VideoFileInfoExtractionService _videoFileInfoExtractionService;

@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Hqv.MediaTools.Types</AssemblyName>
     <RootNamespace>Hqv.MediaTools.Types</RootNamespace>
     <Company>Hqv</Company>
     <Authors>Hqv</Authors>
     <Product>Hqv</Product>
     <Description>Interfaces, Entities, and other classes for MediaTools. Does not contain any implemention of the services.</Description>
-    <Version>1.0.7</Version>
+    <Version>2.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

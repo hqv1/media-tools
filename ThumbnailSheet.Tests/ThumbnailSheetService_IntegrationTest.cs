@@ -11,11 +11,11 @@ namespace Hqv.ThumbnailSheet.Tests
 {
     public class ThumbnailSheetService_IntegrationTest
     {
-        private const string tempThumbnailPath = @"C:\Temp\TempThumbnailPath";
-        private const string thumbnailSheetPath = @"C:\Temp\ThumbnailSheetPath";
+        private const string tempThumbnailPath = @"C:\Workspace\media-tools-space\thumbnails";
+        private const string thumbnailSheetPath = @"C:\Workspace\media-tools-space\thumbnails-sheet";
         private const string ffmpegPath = @"C:\Apps\ffmpeg\bin\ffmpeg.exe";
 
-        private const string outputFilePath = @"C:\Temp\ThumbnailSheetPath\Black_Panther_Teaser_Trailer-sheet.jpg";
+        private const string outputFilePath = @"C:\Workspace\media-tools-space\thumbnails-sheet\JLT-sheet.jpg";
 
         private readonly ThumbnailSheetCreationService _creationService;
         private ThumbnailSheetCreateRequest _request;
@@ -56,10 +56,10 @@ namespace Hqv.ThumbnailSheet.Tests
         private void GivenAValidRequest()
         {
             _request = new ThumbnailSheetCreateRequest(
-                videoPath: @"C:\Temp\Black_Panther_Teaser_Trailer.webm",
-                sheetName: "Black_Panther_Teaser_Trailer",
+                videoPath: @"C:\Workspace\media-tools-space\test-files\JLT.mp4",
+                sheetName: "JLT",
                 numberOfThumbnails: 16,
-                videoDurationInSeconds: 112,
+                videoDurationInSeconds: 152,
                 sheetQuality: 80,
                 sheetTitleFontSize: 12,
                 thumbnailWidth: 320);
@@ -68,10 +68,10 @@ namespace Hqv.ThumbnailSheet.Tests
         private void GivenAInvalidRequest()
         {
             _request = new ThumbnailSheetCreateRequest(
-                videoPath: @"C:\Temp\Black_Panther_Teaser_Trailer.webm",
-                sheetName: "Black_Panther_Teaser_Trailer",
+                videoPath: @"C:\Workspace\media-tools-space\test-files\INVALID-FILE.mp4",
+                sheetName: "JLT",
                 numberOfThumbnails: 9,
-                videoDurationInSeconds: 112
+                videoDurationInSeconds: 152
 ,
                 sheetQuality: -2,
                 sheetTitleFontSize: 12,

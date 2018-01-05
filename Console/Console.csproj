@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>Hqv.MediaTools.Console</AssemblyName>
     <RootNamespace>Hqv.MediaTools.Console</RootNamespace>    
     <PreBuildEvent />    
@@ -10,9 +10,7 @@
     <Company>Hqv</Company>    
     <Product>Hqv</Product>    
     <Description>Console to create thumbnail sheets</Description>    
-    <Version>1.0.4</Version>    
-    <AssemblyVersion>1.0.4.0</AssemblyVersion>    
-    <FileVersion>1.0.4.0</FileVersion>
+    <Version>2.0.0</Version>    
   </PropertyGroup>
   
   <ItemGroup>
