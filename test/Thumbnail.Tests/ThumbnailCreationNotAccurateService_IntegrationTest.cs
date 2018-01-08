@@ -7,8 +7,7 @@ using Xunit;
 namespace Hqv.MediaTools.Thumbnail.Tests
 {
     public class ThumbnailCreationNotAccurateService_IntegrationTest
-    {
-        
+    {        
         private const string FfmpegPath = @"C:\Apps\ffmpeg\bin\ffmpeg.exe";
         private const int GetThumbnailEveryNSeconds = 10;
         private const string TempThumbnailPath = @"C:\Workspace\media-tools-space\thumbnails";

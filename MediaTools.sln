@@ -1,29 +1,31 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.12
+VisualStudioVersion = 15.0.27004.2008
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Types", "Types\Types.csproj", "{0E202E19-3258-4715-BED2-8CB2D6777C12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Types", "src\Types\Types.csproj", "{0E202E19-3258-4715-BED2-8CB2D6777C12}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VideoFileInfo", "VideoFileInfo\VideoFileInfo.csproj", "{7BAE5729-6688-4E1C-8F62-369361F2AF19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VideoFileInfo", "src\VideoFileInfo\VideoFileInfo.csproj", "{7BAE5729-6688-4E1C-8F62-369361F2AF19}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VideoFileInfo.Tests", "VideoFileInfo.Tests\VideoFileInfo.Tests.csproj", "{24BDE74C-3FE3-466A-8374-FB1AFE3F9B53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VideoFileInfo.Tests", "test\VideoFileInfo.Tests\VideoFileInfo.Tests.csproj", "{24BDE74C-3FE3-466A-8374-FB1AFE3F9B53}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThumbnailSheet", "ThumbnailSheet\ThumbnailSheet.csproj", "{66A54442-82FC-46CB-B59A-0E0DB9800517}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThumbnailSheet", "src\ThumbnailSheet\ThumbnailSheet.csproj", "{66A54442-82FC-46CB-B59A-0E0DB9800517}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThumbnailSheet.Tests", "ThumbnailSheet.Tests\ThumbnailSheet.Tests.csproj", "{70972FC4-C37A-49C7-BBF8-258B19706565}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThumbnailSheet.Tests", "test\ThumbnailSheet.Tests\ThumbnailSheet.Tests.csproj", "{70972FC4-C37A-49C7-BBF8-258B19706565}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0CBACFEB-2E58-4C76-8E5D-93680E530853}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0CBACFEB-2E58-4C76-8E5D-93680E530853}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console", "Console\Console.csproj", "{C1DD6614-B96E-4D38-8B89-7079408C52E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console", "src\Console\Console.csproj", "{C1DD6614-B96E-4D38-8B89-7079408C52E5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thumbnail", "Thumbnail\Thumbnail.csproj", "{A2ECC26A-CCD2-4359-A41A-6A0C119BC156}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thumbnail", "src\Thumbnail\Thumbnail.csproj", "{A2ECC26A-CCD2-4359-A41A-6A0C119BC156}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thumbnail.Tests", "Thumbnail.Tests\Thumbnail.Tests.csproj", "{7473BF5A-5F2A-4506-8614-7043B9D1822F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thumbnail.Tests", "test\Thumbnail.Tests\Thumbnail.Tests.csproj", "{7473BF5A-5F2A-4506-8614-7043B9D1822F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileDownload", "FileDownload\FileDownload.csproj", "{14046B57-0E0F-40A2-8855-379CAA333010}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileDownload", "src\FileDownload\FileDownload.csproj", "{14046B57-0E0F-40A2-8855-379CAA333010}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThumbnailSheet.Framework", "ThumbnailSheet.Framework\ThumbnailSheet.Framework.csproj", "{2E03F209-9F33-4019-9890-8115047B022B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThumbnailSheet.Framework", "src\ThumbnailSheet.Framework\ThumbnailSheet.Framework.csproj", "{2E03F209-9F33-4019-9890-8115047B022B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F2EBD645-CFA3-4A59-B7E3-1F4928C2F69C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,8 +78,18 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{0E202E19-3258-4715-BED2-8CB2D6777C12} = {F2EBD645-CFA3-4A59-B7E3-1F4928C2F69C}
+		{7BAE5729-6688-4E1C-8F62-369361F2AF19} = {F2EBD645-CFA3-4A59-B7E3-1F4928C2F69C}
 		{24BDE74C-3FE3-466A-8374-FB1AFE3F9B53} = {0CBACFEB-2E58-4C76-8E5D-93680E530853}
+		{66A54442-82FC-46CB-B59A-0E0DB9800517} = {F2EBD645-CFA3-4A59-B7E3-1F4928C2F69C}
 		{70972FC4-C37A-49C7-BBF8-258B19706565} = {0CBACFEB-2E58-4C76-8E5D-93680E530853}
+		{C1DD6614-B96E-4D38-8B89-7079408C52E5} = {F2EBD645-CFA3-4A59-B7E3-1F4928C2F69C}
+		{A2ECC26A-CCD2-4359-A41A-6A0C119BC156} = {F2EBD645-CFA3-4A59-B7E3-1F4928C2F69C}
 		{7473BF5A-5F2A-4506-8614-7043B9D1822F} = {0CBACFEB-2E58-4C76-8E5D-93680E530853}
+		{14046B57-0E0F-40A2-8855-379CAA333010} = {F2EBD645-CFA3-4A59-B7E3-1F4928C2F69C}
+		{2E03F209-9F33-4019-9890-8115047B022B} = {F2EBD645-CFA3-4A59-B7E3-1F4928C2F69C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {49664C1D-592F-416D-BA39-FF65F3DDAC30}
 	EndGlobalSection
 EndGlobal
