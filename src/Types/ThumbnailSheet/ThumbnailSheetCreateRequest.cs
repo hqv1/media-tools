@@ -1,5 +1,5 @@
 using System;
-using Hqv.CSharp.Common.Components;
+using Hqv.Seedwork.Components;
 
 namespace Hqv.MediaTools.Types.ThumbnailSheet
 {

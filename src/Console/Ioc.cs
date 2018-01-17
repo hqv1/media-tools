@@ -1,8 +1,6 @@
 ﻿using System;
 using Autofac;
-using Hqv.CSharp.Common.Audit;
-using Hqv.CSharp.Common.Audit.Logging;
-using Hqv.CSharp.Common.Logging;
+
 using Hqv.MediaTools.Console.Actors;
 using Hqv.MediaTools.FileDownload;
 using Hqv.MediaTools.Thumbnail;
@@ -12,6 +10,7 @@ using Hqv.MediaTools.Types.Thumbnail;
 using Hqv.MediaTools.Types.ThumbnailSheet;
 using Hqv.MediaTools.Types.VideoFileInfo;
 using Hqv.MediaTools.VideoFileInfo;
+using Hqv.Seedwork.Audit;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Core;
@@ -48,7 +47,7 @@ namespace Hqv.MediaTools.Console
                 }
                 var logLevelSwitch = new LoggingLevelSwitch { MinimumLevel = level };
 
-                builder.RegisterType<CSharp.Common.Logging.Serilog.Logger>().As<IHqvLogger>();
+                //builder.RegisterType<CSharp.Common.Logging.Serilog.Logger>().As<IHqvLogger>();
                 builder.RegisterInstance(new LoggerConfiguration()
                     .MinimumLevel.ControlledBy(logLevelSwitch)
                     .WriteTo.File(new JsonFormatter(), loggingPath)
@@ -64,10 +63,11 @@ namespace Hqv.MediaTools.Console
             builder.RegisterType<CreateThumbnailSheetActor>();
             builder.RegisterType<DownloadFileActor>();
 
-            builder.RegisterType<AuditorResponseBase>().As<IAuditorResponseBase>();
-            builder.RegisterInstance(new AuditorResponseBase.Settings(
-                Convert.ToBoolean(config["auditing:audit-on-successful-event"]),
-                Convert.ToBoolean(config["auditing:detail-audit-on-successful-event"])));
+            //todo: remove or think about using IAuditorResponseBase
+            //builder.RegisterType<AuditorResponseBase>().As<IAuditorResponseBase>();
+            //builder.RegisterInstance(new AuditorResponseBase.Settings(
+            //    Convert.ToBoolean(config["auditing:audit-on-successful-event"]),
+            //    Convert.ToBoolean(config["auditing:detail-audit-on-successful-event"])));
 
             builder.RegisterType<FileDownloaderService>().As<IFileDownloaderService>();
             builder.RegisterInstance(new FileDownloaderService.Settings(

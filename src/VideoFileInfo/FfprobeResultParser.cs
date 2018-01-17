@@ -1,7 +1,7 @@
 using System.IO;
 using System.Linq;
-using Hqv.CSharp.Common.Exceptions;
 using Hqv.MediaTools.Types.Models;
+using Hqv.Seedwork.Exceptions;
 using Newtonsoft.Json.Linq;
 
 namespace Hqv.MediaTools.VideoFileInfo

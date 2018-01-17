@@ -1,7 +1,7 @@
 ﻿using System;
-using Hqv.CSharp.Common.Audit;
 using Hqv.MediaTools.Console.Options;
 using Hqv.MediaTools.Types.Thumbnail;
+using Hqv.Seedwork.Audit;
 
 namespace Hqv.MediaTools.Console.Actors
 {

@@ -1,10 +1,8 @@
 using System;
-using System.Diagnostics;
 using System.IO;
-using System.Text;
-using Hqv.CSharp.Common.App;
-using Hqv.CSharp.Common.Exceptions;
 using Hqv.MediaTools.Types.ThumbnailSheet;
+using Hqv.Seedwork.App;
+using Hqv.Seedwork.Exceptions;
 
 namespace Hqv.MediaTools.ThumbnailSheet
 {

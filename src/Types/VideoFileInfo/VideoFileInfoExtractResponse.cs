@@ -1,4 +1,4 @@
-﻿using Hqv.CSharp.Common.Components;
+﻿using Hqv.Seedwork.Components;
 using Hqv.MediaTools.Types.Models;
 
 namespace Hqv.MediaTools.Types.VideoFileInfo

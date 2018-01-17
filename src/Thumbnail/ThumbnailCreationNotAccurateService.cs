@@ -2,10 +2,10 @@
 using System.IO;
 using System.Linq;
 using FluentValidation;
-using Hqv.CSharp.Common.App;
-using Hqv.CSharp.Common.Exceptions;
-using Hqv.CSharp.Common.Validations;
 using Hqv.MediaTools.Types.Thumbnail;
+using Hqv.Seedwork.App;
+using Hqv.Seedwork.Exceptions;
+using Hqv.Seedwork.Validations;
 
 namespace Hqv.MediaTools.Thumbnail
 {

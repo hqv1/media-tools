@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 using CommandLine;
-using Hqv.CSharp.Common.Logging;
 using Hqv.MediaTools.Console.Actors;
 using Hqv.MediaTools.Console.Options;
 using Microsoft.Extensions.Configuration;
+using Serilog;
 
 namespace Hqv.MediaTools.Console
 {
@@ -46,7 +46,7 @@ namespace Hqv.MediaTools.Console
             }
             catch (Exception ex)
             {
-                var logger = _iocContainer.Resolve<IHqvLogger>();
+                var logger = _iocContainer.Resolve<ILogger>();
                 logger.Error(ex, "Fatal exception");
                 System.Console.WriteLine($"Exception. See logs: {ex.Message}");
                 return 1;
@@ -55,7 +55,7 @@ namespace Hqv.MediaTools.Console
 
         private static int ProcessError(IEnumerable<Error> errs, string[] args)
         {
-            var logger = _iocContainer.Resolve<IHqvLogger>();            
+            var logger = _iocContainer.Resolve<ILogger>();            
             var exception = new Exception("Unable to parse command");
             exception.Data["args"] = string.Join("; ", args) + " --- ";
             exception.Data["errors"] = string.Join("; ", errs.Select(x=>x.Tag));

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using FluentValidation;
-using Hqv.CSharp.Common.Components;
+using Hqv.Seedwork.Components;
 
 namespace Hqv.MediaTools.Types.FileDownload
 {

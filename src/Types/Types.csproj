@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="7.3.4" />
-    <PackageReference Include="Hqv.CSharp.Common" Version="2.0.1" />
+    <PackageReference Include="Hqv.Seedwork" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using FluentValidation;
-using Hqv.CSharp.Common.Exceptions;
 using Hqv.MediaTools.Types.ThumbnailSheet;
+using Hqv.Seedwork.Exceptions;
 
 namespace Hqv.MediaTools.ThumbnailSheet.Framework
 {       

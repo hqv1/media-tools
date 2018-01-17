@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hqv.CSharp.Common.App" Version="2.0.0" />
+    <PackageReference Include="Hqv.Seedwork.App" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
