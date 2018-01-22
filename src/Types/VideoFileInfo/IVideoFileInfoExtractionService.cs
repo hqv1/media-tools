@@ -1,4 +1,6 @@
-﻿namespace Hqv.MediaTools.Types.VideoFileInfo
+﻿using Hqv.MediaTools.Types.Models;
+
+namespace Hqv.MediaTools.Types.VideoFileInfo
 {
     /// <summary>
     /// Service for video file information
@@ -10,6 +12,6 @@
         /// </summary>
         /// <param name="request">The request</param>
         /// <returns>If successful, the video file information. If not, the exception messages </returns>
-        VideoFileInfoExtractResponse Extract(VideoFileInfoExtractRequest request);
+        VideoFileInfoExtractResponse Extract(VideoFileInfoExtractRequest request);        
     }
 }

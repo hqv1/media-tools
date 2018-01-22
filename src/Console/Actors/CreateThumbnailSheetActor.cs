@@ -42,6 +42,8 @@ namespace Hqv.MediaTools.Console.Actors
         {            
             var request = new VideoFileInfoExtractRequest(options.VideoFilePath, _correlationId);            
             var response =  _videoFileInfoExtractionService.Extract(request);
+
+
             if (response.IsValid)
             {
                 _auditor.AuditSuccess("VideoFile", options.VideoFilePath, "InfoExtracted", response);

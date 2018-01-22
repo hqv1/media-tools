@@ -16,8 +16,6 @@ namespace Hqv.MediaTools.Types.VideoFileInfo
         /// <summary>
         /// Video file information
         /// </summary>
-        public VideoFileInformationModel VideoFileInformation { get; set; }
-
-        
+        public VideoFileInformationModel VideoFileInformation { get; set; }        
     }
 }

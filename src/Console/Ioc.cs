@@ -1,6 +1,4 @@
 ﻿using System;
-using Autofac;
-
 using Hqv.MediaTools.Console.Actors;
 using Hqv.MediaTools.FileDownload;
 using Hqv.MediaTools.Thumbnail;
@@ -11,85 +9,55 @@ using Hqv.MediaTools.Types.ThumbnailSheet;
 using Hqv.MediaTools.Types.VideoFileInfo;
 using Hqv.MediaTools.VideoFileInfo;
 using Hqv.Seedwork.Audit;
+using Hqv.Seedwork.Audit.Serilog;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using Serilog.Core;
-using Serilog.Events;
-using Serilog.Formatting.Json;
 
 namespace Hqv.MediaTools.Console
 {
-    /// <summary>
-    /// IOC container using Autofac (https://autofac.org/)
-    /// </summary>
     internal static class Ioc
     {
-        public static IContainer RegisterComponents(IConfigurationRoot config)
+        public static IServiceProvider RegisterComponents(IConfigurationRoot configuration)
         {
-            var builder = new ContainerBuilder();
-            builder.RegisterInstance(config).As<IConfiguration>();
+            IServiceCollection services = new ServiceCollection();
 
-            try
-            {
-                var loggingPath = config["logging:path"];
-                if (string.IsNullOrEmpty(loggingPath))
-                {
-                    const string message = "logging:path cannot be empty in configuration file";
-                    System.Console.WriteLine(message);
-                    throw new Exception();
-                }
+            services.AddOptions();
 
-                if (!Enum.TryParse(config["logging:minimum-level"], out LogEventLevel level))
-                {
-                    const string message = "logging:minimum-level is incorrect in configuration file";
-                    System.Console.WriteLine(message);
-                    throw new Exception();
-                }
-                var logLevelSwitch = new LoggingLevelSwitch { MinimumLevel = level };
+            services.AddScoped<ILogger>(provider => new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .CreateLogger());
 
-                //builder.RegisterType<CSharp.Common.Logging.Serilog.Logger>().As<IHqvLogger>();
-                builder.RegisterInstance(new LoggerConfiguration()
-                    .MinimumLevel.ControlledBy(logLevelSwitch)
-                    .WriteTo.File(new JsonFormatter(), loggingPath)
-                    .CreateLogger()).As<ILogger>();
-            }
-            catch (Exception)
-            {
-                System.Console.WriteLine("Logging registration failed");
-                throw;
-            }
+            services.AddScoped<CreateThumbnailsActor>();
+            services.AddScoped<CreateThumbnailSheetActor>();
+            services.AddScoped<DownloadFileActor>();
 
-            builder.RegisterType<CreateThumbnailsActor>();
-            builder.RegisterType<CreateThumbnailSheetActor>();
-            builder.RegisterType<DownloadFileActor>();
+            services.AddScoped<IAuditorResponseBase, AuditorResponseBase>();
+            services.Configure<AuditorResponseBase.Config>(config=>
+                configuration.GetSection("Auditing"));
 
-            //todo: remove or think about using IAuditorResponseBase
-            //builder.RegisterType<AuditorResponseBase>().As<IAuditorResponseBase>();
-            //builder.RegisterInstance(new AuditorResponseBase.Settings(
-            //    Convert.ToBoolean(config["auditing:audit-on-successful-event"]),
-            //    Convert.ToBoolean(config["auditing:detail-audit-on-successful-event"])));
+            services.AddScoped<IFileDownloaderService, FileDownloaderService>();
+            services.AddScoped(provider => new FileDownloaderService.Settings(
+                configuration["ffmpeg-path"],
+                configuration["file-downloader:save-path"]));
 
-            builder.RegisterType<FileDownloaderService>().As<IFileDownloaderService>();
-            builder.RegisterInstance(new FileDownloaderService.Settings(
-                config["ffmpeg-path"],
-                config["file-downloader:save-path"]));
+            services.AddScoped<IThumbnailCreationService, ThumbnailCreationNotAccurateService>();
+            services.AddScoped(provider => new ThumbnailCreationNotAccurateService.Settings(
+                configuration["thumbnail:thumbnail-path"],
+                configuration["ffmpeg-path"]));
 
-            builder.RegisterType<ThumbnailCreationNotAccurateService>().As<IThumbnailCreationService>();
-            builder.RegisterInstance(new ThumbnailCreationNotAccurateService.Settings(
-                config["thumbnail:thumbnail-path"],
-                config["ffmpeg-path"]));
 
-            builder.RegisterType<ThumbnailSheetCreationService>().As<IThumbnailSheetCreationService>();
-            builder.RegisterInstance(new ThumbnailSheetCreationService.Settings(
-                config["thumbnailsheet:thumbnail-path-temp"],
-                config["thumbnailsheet:sheet-path"],
-                config["ffmpeg-path"]));
+            services.AddScoped<IThumbnailSheetCreationService, ThumbnailSheetCreationService>();
+            services.AddScoped(provider => new ThumbnailSheetCreationService.Settings(
+                configuration["thumbnailsheet:thumbnail-path-temp"],
+                configuration["thumbnailsheet:sheet-path"],
+                configuration["ffmpeg-path"]));            
 
-            builder.RegisterType<VideoFileInfoExtractionService>().As<IVideoFileInfoExtractionService>();
-            builder.RegisterInstance(new VideoFileInfoExtractionService.Settings(
-                config["ffprobe-path"]));
+            services.AddScoped<IVideoFileInfoExtractionService, VideoFileInfoExtractionService>();
+            services.AddScoped(provider => Microsoft.Extensions.Options.Options.Create(new VideoFileInfoExtractionService.Config(
+                configuration["ffprobe-path"])));
 
-            return builder.Build();
+            return services.BuildServiceProvider();
         }
-    }
+    }    
 }

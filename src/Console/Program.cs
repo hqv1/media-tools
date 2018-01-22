@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Autofac;
 using CommandLine;
 using Hqv.MediaTools.Console.Actors;
 using Hqv.MediaTools.Console.Options;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
 namespace Hqv.MediaTools.Console
@@ -24,7 +24,7 @@ namespace Hqv.MediaTools.Console
     internal class Program
     {
         private static IConfigurationRoot _config;
-        private static IContainer _iocContainer;
+        private static IServiceProvider _iocContainer;
 
         private static int Main(string[] args)
         {
@@ -38,15 +38,15 @@ namespace Hqv.MediaTools.Console
                     CreateThumbnailSheetOptions,
                     DownloadFileOptions>(args)
                     .MapResult(
-                        (CreateThumbnailsOptions opts) => _iocContainer.Resolve<CreateThumbnailsActor>().Act(opts),
-                        (CreateThumbnailSheetOptions opts) => _iocContainer.Resolve<CreateThumbnailSheetActor>().Act(opts),
-                        (DownloadFileOptions opts) => _iocContainer.Resolve<DownloadFileActor>().Act(opts),
+                        (CreateThumbnailsOptions opts) => _iocContainer.GetService<CreateThumbnailsActor>().Act(opts),
+                        (CreateThumbnailSheetOptions opts) => _iocContainer.GetService<CreateThumbnailSheetActor>().Act(opts),
+                        (DownloadFileOptions opts) => _iocContainer.GetService<DownloadFileActor>().Act(opts),
                         errs=>ProcessError(errs, args)
                     );
             }
             catch (Exception ex)
             {
-                var logger = _iocContainer.Resolve<ILogger>();
+                var logger = _iocContainer.GetService<ILogger>();
                 logger.Error(ex, "Fatal exception");
                 System.Console.WriteLine($"Exception. See logs: {ex.Message}");
                 return 1;
@@ -55,7 +55,7 @@ namespace Hqv.MediaTools.Console
 
         private static int ProcessError(IEnumerable<Error> errs, string[] args)
         {
-            var logger = _iocContainer.Resolve<ILogger>();            
+            var logger = _iocContainer.GetService<ILogger>();            
             var exception = new Exception("Unable to parse command");
             exception.Data["args"] = string.Join("; ", args) + " --- ";
             exception.Data["errors"] = string.Join("; ", errs.Select(x=>x.Tag));
@@ -69,6 +69,7 @@ namespace Hqv.MediaTools.Console
             _config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional:false, reloadOnChange:true)                
                 .Build();
+            
         }       
     }
 }

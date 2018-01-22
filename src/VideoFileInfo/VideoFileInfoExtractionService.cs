@@ -1,43 +1,37 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using Hqv.MediaTools.Types.VideoFileInfo;
 using Hqv.Seedwork.App;
 using Hqv.Seedwork.Exceptions;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
 namespace Hqv.MediaTools.VideoFileInfo
 {
+    /// <inheritdoc />
     /// <summary>
     /// Video File Info Extraction service.
-    /// 
     /// It uses FFprobe to get the information. It runs FFprobe as a command line with arguments, 
     /// gets its output as a JSON and parses the output to obtain the Video File information.
-    /// 
     /// You can get FFProbe at http://ffmpeg.org/download.html. It's part of the FFMpeg download.
     /// Known to work with version 3.3.2.
-    /// 
-    /// todo: Creating and running a process could probably be put into a shared library 
     /// </summary>
     public class VideoFileInfoExtractionService : IVideoFileInfoExtractionService
     {
-        private readonly Settings _settings;
+        private readonly Config _config;
         private readonly FfprobeResultParser _ffprobeResultParser;
         private Response _response;
-
-        private readonly StringBuilder _errorBuilder = new StringBuilder();
-        private readonly StringBuilder _outputBuilder = new StringBuilder();        
-
-        /// <summary>
-        /// Settings for the service
-        /// </summary>
-        public class Settings
+              
+        public class Config
         {
-            /// <summary>
-            /// Constructor
-            /// </summary>
-            /// <param name="ffprobePath"> FFProbe path.</param>
-            public Settings(string ffprobePath)
+            public const string ConfigurationSectionName = " VideoFileInfoExtraction";
+
+            public Config()
+            {
+                
+            }
+
+            public Config(string ffprobePath)
             {
                 FfprobePath = ffprobePath;
                 Validate();
@@ -54,9 +48,10 @@ namespace Hqv.MediaTools.VideoFileInfo
             /// <summary>
             /// FFProbe path
             /// </summary>
-            public string FfprobePath { get; }
+            public string FfprobePath { get; set; }
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Return additional information than just the generic response
         /// </summary>
@@ -65,34 +60,19 @@ namespace Hqv.MediaTools.VideoFileInfo
             public Response(VideoFileInfoExtractRequest request) : base(request)
             {
             }
-
-            /// <summary>
-            /// FFProbe arguments
-            /// </summary>
+           
             public string FfprobeArguments { get; set; }
-
-            /// <summary>
-            /// Output from FFProbe
-            /// </summary>
+            
             public string FfprobeOutput { get; set; }
         }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="settings">Settings</param>
-        public VideoFileInfoExtractionService(Settings settings)
+        
+        public VideoFileInfoExtractionService(IOptions<Config> config)
         {
-            _settings = settings;
+            _config = config.Value;
 
             _ffprobeResultParser = new FfprobeResultParser();
         }
-
-        /// <summary>
-        /// Extract video information
-        /// </summary>
-        /// <param name="request">Request</param>
-        /// <returns>Response</returns>
+        
         public VideoFileInfoExtractResponse Extract(VideoFileInfoExtractRequest request)
         {
             _response = new Response(request);
@@ -111,7 +91,7 @@ namespace Hqv.MediaTools.VideoFileInfo
             }
             return _response;
         }
-
+        
         private void ExtractTry(VideoFileInfoExtractRequest request)
         {
             var ffprobeResult = RunFfprobe(request);
@@ -125,7 +105,7 @@ namespace Hqv.MediaTools.VideoFileInfo
             _response.FfprobeArguments = arguments;
 
             var app = new CommandLineApplication();
-            return app.Run(_settings.FfprobePath, arguments);            
+            return app.Run(_config.FfprobePath, arguments);            
         }        
 
         private JObject GetJsonFromFfprobeResult(ProcessResult ffprobeResult)

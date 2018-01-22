@@ -24,7 +24,7 @@ namespace Hqv.VideoFileInfo.Tests
 
         public VideoFileInfoService_IntegrationTest()
         {            
-            var settings = new VideoFileInfoExtractionService.Settings(FfprobePath);            
+            var settings = new VideoFileInfoExtractionService.Config(FfprobePath);            
             _videoFileInfoExtractionService = new VideoFileInfoExtractionService(settings);
         }
 
