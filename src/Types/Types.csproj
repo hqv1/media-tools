@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Hqv.MediaTools.Types</AssemblyName>
+    <RootNamespace>Hqv.MediaTools.Types</RootNamespace>
+    <Company>Hqv</Company>
+    <Authors>Hqv</Authors>
+    <Product>Hqv</Product>
+    <Description>Interfaces, Entities, and other classes for MediaTools. Does not contain any implemention of the services.</Description>
+    <Version>2.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="7.4.0" />
+    <PackageReference Include="Hqv.Seedwork" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="NETStandard.Library" Version="2.0.1" />
+  </ItemGroup>
+
+</Project>
