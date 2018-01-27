@@ -3,34 +3,31 @@ using System.IO;
 using FluentValidation;
 using Hqv.MediaTools.Types.ThumbnailSheet;
 using Hqv.Seedwork.Exceptions;
+using Microsoft.Extensions.Options;
 
 namespace Hqv.MediaTools.ThumbnailSheet
 {       
+    /// <inheritdoc />
     /// <summary>
     /// Thumbnail sheet service
-    /// 
     /// todo: validation can be abstracted to a shared library
     /// </summary>
     public class ThumbnailSheetCreationService : IThumbnailSheetCreationService
     {
-        private readonly Settings _settings;
+        private readonly Config _config;
         private readonly SheetCreator _sheetCreator;
         private readonly ThumbnailCreatorExactLocation _thumbnailCreator;        
 
         private Response _response;
-
-        /// <summary>
-        /// Settings for the service
-        /// </summary>
-        public class Settings
+        
+        public class Config
         {
-            /// <summary>
-            /// Constructor
-            /// </summary>
-            /// <param name="tempThumbnailPath">Temporary directory to store thumbnails</param>
-            /// <param name="thumbnailSheetPath">Directory to save the thumbnail</param>
-            /// <param name="ffmpegPath">FFmpeg path</param>
-            public Settings(string tempThumbnailPath, string thumbnailSheetPath, string ffmpegPath)
+            public Config()
+            {
+                
+            }
+            
+            public Config(string tempThumbnailPath, string thumbnailSheetPath, string ffmpegPath)
             {
                 TempThumbnailPath = tempThumbnailPath;
                 ThumbnailSheetPath = thumbnailSheetPath;
@@ -43,19 +40,19 @@ namespace Hqv.MediaTools.ThumbnailSheet
             /// Temporary directory to store thumbnails. Files will be deleted once done. Don't store files you may want
             /// in this directory
             /// </summary>
-            public string TempThumbnailPath { get; }
+            public string TempThumbnailPath { get; set; }
             /// <summary>
             /// Directory to save the thumbnail
             /// </summary>
-            public string ThumbnailSheetPath { get; }
+            public string ThumbnailSheetPath { get; set; }
             /// <summary>
             /// FFmpeg path
             /// </summary>
-            public string FfmpegPath { get; }
+            public string FfmpegPath { get; set; }
             
             private void Validate()
             {
-                var validator = new SettingsValidator();
+                var validator = new ConfigValidator();
                 var validationResult = validator.Validate(this);
                 if (validationResult.IsValid) return;
 
@@ -65,12 +62,13 @@ namespace Hqv.MediaTools.ThumbnailSheet
             }
         }
 
+        /// <inheritdoc />
         /// <summary>
-        /// Validate Settings
+        /// Validate Config
         /// </summary>
-        private class SettingsValidator : AbstractValidator<Settings>
+        private class ConfigValidator : AbstractValidator<Config>
         {
-            public SettingsValidator()
+            public ConfigValidator()
             {
                 RuleFor(x => x.TempThumbnailPath).Must(Directory.Exists);
                 RuleFor(x => x.ThumbnailSheetPath).Must(Directory.Exists);
@@ -78,6 +76,7 @@ namespace Hqv.MediaTools.ThumbnailSheet
             }
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Add some additional information to the response
         /// </summary>
@@ -100,15 +99,16 @@ namespace Hqv.MediaTools.ThumbnailSheet
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="settings">Settings</param>
-        public ThumbnailSheetCreationService(Settings settings)
+        /// <param name="config">Config</param>
+        public ThumbnailSheetCreationService(IOptions<Config> config)
         {
-            _settings = settings;
+            _config = config.Value;
 
-            _thumbnailCreator = new ThumbnailCreatorExactLocation(_settings);
-            _sheetCreator = new SheetCreator(_settings);
+            _thumbnailCreator = new ThumbnailCreatorExactLocation(_config);
+            _sheetCreator = new SheetCreator(_config);
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Create a thumbnail sheet
         /// </summary>
@@ -158,10 +158,8 @@ namespace Hqv.MediaTools.ThumbnailSheet
         /// </summary>
         private void CleanupTempFolder()
         {
-            foreach (var file in Directory.GetFiles(_settings.TempThumbnailPath, "thumbnail*.png"))
-            {
+            foreach (var file in Directory.GetFiles(_config.TempThumbnailPath, "thumbnail*.png"))
                 File.Delete(file);
-            }
         }        
     }    
 }

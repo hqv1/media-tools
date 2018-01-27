@@ -48,14 +48,16 @@ namespace Hqv.MediaTools.Console
 
 
             services.AddScoped<IThumbnailSheetCreationService, ThumbnailSheetCreationService>();
-            services.AddScoped(provider => new ThumbnailSheetCreationService.Settings(
-                configuration["thumbnailsheet:thumbnail-path-temp"],
-                configuration["thumbnailsheet:sheet-path"],
-                configuration["ffmpeg-path"]));            
+            services.AddScoped(provider => Microsoft.Extensions.Options.Options.Create(
+                new ThumbnailSheetCreationService.Config(
+                    configuration["thumbnailsheet:thumbnail-path-temp"],
+                    configuration["thumbnailsheet:sheet-path"],
+                    configuration["ffmpeg-path"])));            
 
             services.AddScoped<IVideoFileInfoExtractionService, VideoFileInfoExtractionService>();
-            services.AddScoped(provider => Microsoft.Extensions.Options.Options.Create(new VideoFileInfoExtractionService.Config(
-                configuration["ffprobe-path"])));
+            services.AddScoped(provider => Microsoft.Extensions.Options.Options.Create(
+                new VideoFileInfoExtractionService.Config(
+                    configuration["ffprobe-path"])));
 
             return services.BuildServiceProvider();
         }

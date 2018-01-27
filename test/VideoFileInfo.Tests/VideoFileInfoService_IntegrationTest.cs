@@ -2,6 +2,7 @@
 using FluentAssertions;
 using Hqv.MediaTools.Types.VideoFileInfo;
 using Hqv.MediaTools.VideoFileInfo;
+using Microsoft.Extensions.Options;
 using Xunit;
 
 // ReSharper disable InconsistentNaming
@@ -13,9 +14,8 @@ namespace Hqv.VideoFileInfo.Tests
     /// </summary>
     public class VideoFileInfoService_IntegrationTest
     {
-        // Path to FFProbe
+        
         private const string FfprobePath = @"C:\Apps\ffmpeg\bin\ffprobe.exe";
-        // Video file to extract
         private const string VideoFilePathValid = @"C:\Workspace\media-tools-space\test-files\JLT.mp4";
 
         private VideoFileInfoExtractRequest _request;
@@ -23,9 +23,9 @@ namespace Hqv.VideoFileInfo.Tests
         private VideoFileInfoExtractResponse _response;
 
         public VideoFileInfoService_IntegrationTest()
-        {            
+        {                        
             var settings = new VideoFileInfoExtractionService.Config(FfprobePath);            
-            _videoFileInfoExtractionService = new VideoFileInfoExtractionService(settings);
+            _videoFileInfoExtractionService = new VideoFileInfoExtractionService(Options.Create(settings));
         }
 
         /// <summary>

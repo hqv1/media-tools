@@ -31,14 +31,14 @@ namespace Hqv.MediaTools.ThumbnailSheet
             public TimeSpan PointInVideo { get; }
         }
 
-        private readonly ThumbnailSheetCreationService.Settings _settings;
+        private readonly ThumbnailSheetCreationService.Config _config;
         private ThumbnailSheetCreateRequest _request;
         private ThumbnailSheetCreationService.Response _response;
         private readonly TimeStamper _timeStamper;
 
-        public ThumbnailCreatorExactLocation(ThumbnailSheetCreationService.Settings settings)
+        public ThumbnailCreatorExactLocation(ThumbnailSheetCreationService.Config config)
         {
-            _settings = settings;
+            _config = config;
             _timeStamper = new TimeStamper();
         }
 
@@ -54,14 +54,14 @@ namespace Hqv.MediaTools.ThumbnailSheet
             var thumbnailsSettings = new List<ThumbnailInfo>();
             for (var currentThumbnailNumber = 1; currentThumbnailNumber <= request.NumberOfThumbnails; ++currentThumbnailNumber)
             {
-                var outputFilepath = $"{_settings.TempThumbnailPath}\\thumbnail-{currentThumbnailNumber:D3}.png";
+                var outputFilepath = $"{_config.TempThumbnailPath}\\thumbnail-{currentThumbnailNumber:D3}.png";
                 thumbnailsSettings.Add(new ThumbnailInfo(outputFilepath, currentPointInVideo));
                 currentPointInVideo = currentPointInVideo.Add(timespanToAdd);
             }
                                  
             Parallel.ForEach(thumbnailsSettings, thumbnailsSetting =>
             {
-                var tc = new FfmpegThumbnailCreatorExactLocation(_settings);
+                var tc = new FfmpegThumbnailCreatorExactLocation(_config);
                 tc.CreateThumbnail(_request, _response, thumbnailsSetting.PointInVideo, thumbnailsSetting.OutputFilepath);                
             });
 

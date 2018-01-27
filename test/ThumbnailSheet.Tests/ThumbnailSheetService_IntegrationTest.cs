@@ -1,13 +1,13 @@
 using System.IO;
 using System.Linq;
 using FluentAssertions;
-using Hqv.MediaTools.ThumbnailSheet;
 using Hqv.MediaTools.Types.ThumbnailSheet;
+using Microsoft.Extensions.Options;
 using Xunit;
 
 // ReSharper disable InconsistentNaming
 
-namespace Hqv.ThumbnailSheet.Tests
+namespace Hqv.MediaTools.ThumbnailSheet.Tests
 {
     public class ThumbnailSheetService_IntegrationTest
     {
@@ -23,8 +23,8 @@ namespace Hqv.ThumbnailSheet.Tests
 
         public ThumbnailSheetService_IntegrationTest()
         {            
-            var settings = new ThumbnailSheetCreationService.Settings(tempThumbnailPath, thumbnailSheetPath, ffmpegPath);
-            _creationService = new ThumbnailSheetCreationService(settings);
+            var settings = new ThumbnailSheetCreationService.Config(tempThumbnailPath, thumbnailSheetPath, ffmpegPath);
+            _creationService = new ThumbnailSheetCreationService(Options.Create(settings));
 
             if (File.Exists(outputFilePath))
             {

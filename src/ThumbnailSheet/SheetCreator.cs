@@ -17,11 +17,11 @@ namespace Hqv.MediaTools.ThumbnailSheet
     /// </summary>
     internal class SheetCreator
     {
-        private readonly ThumbnailSheetCreationService.Settings _settings;
+        private readonly ThumbnailSheetCreationService.Config _config;
 
-        public SheetCreator(ThumbnailSheetCreationService.Settings settings)
+        public SheetCreator(ThumbnailSheetCreationService.Config config)
         {
-            _settings = settings;
+            _config = config;
         }
 
         public void CreateSheet(ThumbnailSheetCreateRequest request, ThumbnailSheetCreationService.Response response)
@@ -35,7 +35,7 @@ namespace Hqv.MediaTools.ThumbnailSheet
         private void CreateSheet(ThumbnailSheetCreateRequest request, ThumbnailSheetCreationService.Response response, IMagickImageCollection images)
         {
             int tempWidth = 0, tempHeight = 0;
-            var files = Directory.GetFiles(_settings.TempThumbnailPath, "thumbnail*.png").OrderBy(x => x).ToList();
+            var files = Directory.GetFiles(_config.TempThumbnailPath, "thumbnail*.png").OrderBy(x => x).ToList();
             foreach (var file in files)
             {
                 var image = new MagickImage(file);
@@ -63,7 +63,7 @@ namespace Hqv.MediaTools.ThumbnailSheet
 
             using (var montage = images.Montage(montageSetting))
             {
-                var path = Path.Combine(_settings.ThumbnailSheetPath, request.SheetName + "-sheet.jpg");
+                var path = Path.Combine(_config.ThumbnailSheetPath, request.SheetName + "-sheet.jpg");
                 montage.Format = MagickFormat.Jpeg;
                 montage.Quality = request.SheetQuality;
                 montage.Write(path);

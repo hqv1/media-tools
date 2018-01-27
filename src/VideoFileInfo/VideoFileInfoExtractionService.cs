@@ -50,26 +50,10 @@ namespace Hqv.MediaTools.VideoFileInfo
             /// </summary>
             public string FfprobePath { get; set; }
         }
-
-        /// <inheritdoc />
-        /// <summary>
-        /// Return additional information than just the generic response
-        /// </summary>
-        public class Response : VideoFileInfoExtractResponse
-        {
-            public Response(VideoFileInfoExtractRequest request) : base(request)
-            {
-            }
-           
-            public string FfprobeArguments { get; set; }
-            
-            public string FfprobeOutput { get; set; }
-        }
-        
+                
         public VideoFileInfoExtractionService(IOptions<Config> config)
         {
             _config = config.Value;
-
             _ffprobeResultParser = new FfprobeResultParser();
         }
         

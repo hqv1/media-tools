@@ -2,12 +2,13 @@
 
   <PropertyGroup>    
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <AssemblyName>Hqv.ThumbnailSheet.Tests</AssemblyName>    
-    <RootNamespace>Hqv.ThumbnailSheet.Tests</RootNamespace>
+    <AssemblyName>Hqv.MediaTools.ThumbnailSheet.Tests</AssemblyName>    
+    <RootNamespace>Hqv.MediaTools.ThumbnailSheet.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="4.19.4" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="2.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
