@@ -37,14 +37,16 @@ namespace Hqv.MediaTools.Console
                 configuration.GetSection("Auditing"));
 
             services.AddScoped<IFileDownloaderService, FileDownloaderService>();
-            services.AddScoped(provider => new FileDownloaderService.Settings(
-                configuration["ffmpeg-path"],
-                configuration["file-downloader:save-path"]));
+            services.AddScoped(provider => Microsoft.Extensions.Options.Options.Create(
+                new FileDownloaderService.Config(
+                    configuration["ffmpeg-path"],
+                    configuration["file-downloader:save-path"])));
 
             services.AddScoped<IThumbnailCreationService, ThumbnailCreationNotAccurateService>();
-            services.AddScoped(provider => new ThumbnailCreationNotAccurateService.Settings(
-                configuration["thumbnail:thumbnail-path"],
-                configuration["ffmpeg-path"]));
+            services.AddScoped(provider => Microsoft.Extensions.Options.Options.Create(
+                new ThumbnailCreationNotAccurateService.Config(
+                    configuration["thumbnail:thumbnail-path"],
+                    configuration["ffmpeg-path"])));
 
 
             services.AddScoped<IThumbnailSheetCreationService, ThumbnailSheetCreationService>();

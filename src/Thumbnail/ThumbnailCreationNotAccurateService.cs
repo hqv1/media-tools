@@ -6,6 +6,7 @@ using Hqv.MediaTools.Types.Thumbnail;
 using Hqv.Seedwork.App;
 using Hqv.Seedwork.Exceptions;
 using Hqv.Seedwork.Validations;
+using Microsoft.Extensions.Options;
 
 namespace Hqv.MediaTools.Thumbnail
 {
@@ -22,27 +23,32 @@ namespace Hqv.MediaTools.Thumbnail
     /// </summary>
     public class ThumbnailCreationNotAccurateService : IThumbnailCreationService
     {
-        private readonly Settings _settings;
+        private readonly Config _config;
         private ThumbnailCreationRequest _request;
         private Response _response;
 
-        public class Settings
+        public class Config
         {
-            public Settings(string thumbnailPath, string ffmpegPath)
+            public Config()
+            {
+                
+            }
+
+            public Config(string thumbnailPath, string ffmpegPath)
             {
                 ThumbnailPath = thumbnailPath;
                 FfmpegPath = ffmpegPath;
 
-                Validator.Validate<Settings, SettingsValidator>(this);
+                Validator.Validate<Config, SettingsValidator>(this);
             }
-            public string ThumbnailPath { get; }
+            public string ThumbnailPath { get; set; }
             /// <summary>
             /// FFmpeg path
             /// </summary>
-            public string FfmpegPath { get; }            
+            public string FfmpegPath { get; set; }            
         }
 
-        public class SettingsValidator : AbstractValidator<Settings>
+        public class SettingsValidator : AbstractValidator<Config>
         {
             public SettingsValidator()
             {
@@ -67,9 +73,9 @@ namespace Hqv.MediaTools.Thumbnail
             public string FfmpegErrorOutput { get; set; }
         }
         
-        public ThumbnailCreationNotAccurateService(Settings settings)
+        public ThumbnailCreationNotAccurateService(IOptions<Config> config)
         {
-            _settings = settings;
+            _config = config.Value;
         }
 
         public ThumbnailCreateResponse Create(ThumbnailCreationRequest request)
@@ -96,12 +102,12 @@ namespace Hqv.MediaTools.Thumbnail
         {
             CleanupPreviousFiles();
             var filename = Path.GetFileNameWithoutExtension(_request.VideoPath);
-            var outputPath = Path.Combine(_settings.ThumbnailPath, filename + "-%03d.jpg");
+            var outputPath = Path.Combine(_config.ThumbnailPath, filename + "-%03d.jpg");
             var arguments = $"-i \"{_request.VideoPath}\" -vf fps=1/{_request.GetThumbnailEveryNSeconds} \"{outputPath}\"";
             _response.FfmpegArguments = arguments;
 
             var app = new CommandLineApplication();
-            var commandLineResult = app.Run(_settings.FfmpegPath, arguments);
+            var commandLineResult = app.Run(_config.FfmpegPath, arguments);
             _response.FfmpegErrorOutput = commandLineResult.ErrorData;
 
             if (AnyCreatedFile()) return;
@@ -112,7 +118,7 @@ namespace Hqv.MediaTools.Thumbnail
         private void CleanupPreviousFiles()
         {
             var filename = Path.GetFileNameWithoutExtension(_request.VideoPath);            
-            var previousFiles = Directory.GetFiles(_settings.ThumbnailPath, filename+ "*.jpg");
+            var previousFiles = Directory.GetFiles(_config.ThumbnailPath, filename+ "*.jpg");
             foreach (var file in previousFiles)
             {
                 File.Delete(file);
@@ -122,7 +128,7 @@ namespace Hqv.MediaTools.Thumbnail
         private bool AnyCreatedFile()
         {
             var filename = Path.GetFileNameWithoutExtension(_request.VideoPath);
-            return Directory.GetFiles(_settings.ThumbnailPath, filename + "*.jpg").Any();
+            return Directory.GetFiles(_config.ThumbnailPath, filename + "*.jpg").Any();
         }
     }
 }

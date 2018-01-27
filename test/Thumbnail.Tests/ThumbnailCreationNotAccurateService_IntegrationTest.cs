@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Hqv.MediaTools.Types.Thumbnail;
+using Microsoft.Extensions.Options;
 using Xunit;
 
 // ReSharper disable InconsistentNaming
@@ -17,8 +18,8 @@ namespace Hqv.MediaTools.Thumbnail.Tests
 
         public ThumbnailCreationNotAccurateService_IntegrationTest()
         {
-            var settings = new ThumbnailCreationNotAccurateService.Settings(TempThumbnailPath, FfmpegPath);
-            _service = new ThumbnailCreationNotAccurateService(settings);
+            var settings = new ThumbnailCreationNotAccurateService.Config(TempThumbnailPath, FfmpegPath);
+            _service = new ThumbnailCreationNotAccurateService(Options.Create(settings));
         }
 
         [Fact]

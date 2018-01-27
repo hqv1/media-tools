@@ -6,6 +6,7 @@ using Hqv.MediaTools.Types.FileDownload;
 using Hqv.Seedwork.App;
 using Hqv.Seedwork.Exceptions;
 using Hqv.Seedwork.Validations;
+using Microsoft.Extensions.Options;
 
 namespace Hqv.MediaTools.FileDownload
 {    
@@ -17,29 +18,34 @@ namespace Hqv.MediaTools.FileDownload
         private CommandLineApplicationAsync _commandLineApplicationAsync;
         private DownloadRequest _request;
         private Response _response;
-        private readonly Settings _settings;                
+        private readonly Config _config;                
 
-        public class Settings
+        public class Config
         {
-            public Settings(string ffmpegPath, string savePath)
+            public Config()
+            {
+                
+            }
+
+            public Config(string ffmpegPath, string savePath)
             {
                 FfmpegPath = ffmpegPath;
                 SavePath = savePath;
 
-                Validator.Validate<Settings, SettingsValidator>(this);
+                Validator.Validate<Config, SettingsValidator>(this);
             }
 
             /// <summary>
             /// Save directory
             /// </summary>
-            public string SavePath { get; }
+            public string SavePath { get; set; }
             /// <summary>
             /// FFmpeg path
             /// </summary>
-            public string FfmpegPath { get; }            
+            public string FfmpegPath { get; set; }            
         }
 
-        public class SettingsValidator : AbstractValidator<Settings>
+        public class SettingsValidator : AbstractValidator<Config>
         {
             public SettingsValidator()
             {
@@ -64,9 +70,9 @@ namespace Hqv.MediaTools.FileDownload
             public int ResultCode { get; set; }
         }
 
-        public FileDownloaderService(Settings settings)
+        public FileDownloaderService(IOptions<Config>  config)
         {
-            _settings = settings;
+            _config = config.Value;
         }
 
         public async Task<DownloadResponse> Download(DownloadRequest request)
@@ -96,12 +102,12 @@ namespace Hqv.MediaTools.FileDownload
             {
                 extension = "." + extension;
             }
-            var outputFilePath = Path.Combine(_settings.SavePath, _request.OutputFileName + extension);            
+            var outputFilePath = Path.Combine(_config.SavePath, _request.OutputFileName + extension);            
             _response.FfmpegArguments = $"-i {_request.Url} -c copy {outputFilePath}";
             
             _commandLineApplicationAsync = new CommandLineApplicationAsync();
             var result = await _commandLineApplicationAsync.RunAsync(
-                _settings.FfmpegPath,
+                _config.FfmpegPath,
                 _response.FfmpegArguments,
                 CreateProgress(),
                 _request.CancellationToken);
