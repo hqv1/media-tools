@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Thumbnail\Thumbnail.csproj" />
+    <ProjectReference Include="..\..\src\Types\Types.csproj" />
   </ItemGroup>
 
   <ItemGroup>
