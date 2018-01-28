@@ -27,19 +27,19 @@ node('windows') {
 
 	stage('publish') {
 		bat 'del /S *.nupkg'
-		dir("Types") {
+		dir("src/Types") {
 		    bat 'dotnet pack --no-build -c Release'
 		}
-		dir("FileDownload") {
+		dir("src/FileDownload") {
 		    bat 'dotnet pack --no-build -c Release'
 		}
-		dir("Thumbnail") {
+		dir("src/Thumbnail") {
 		    bat 'dotnet pack --no-build -c Release'
 		}
-		dir("ThumbnailSheet") {
+		dir("src/ThumbnailSheet") {
 		    bat 'dotnet pack --no-build -c Release'
 		}		
-		dir("VideoFileInfo") {
+		dir("src/VideoFileInfo") {
 		    bat 'dotnet pack --no-build -c Release'
 		}
 		bat "${nuget_path} push **\\*.nupkg ${nuget_server_key} -Source ${nuget_server}"
