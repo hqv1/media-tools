@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using FluentValidation;
 using Hqv.MediaTools.Types.Thumbnail;
 using Hqv.Seedwork.App;
 using Hqv.Seedwork.Exceptions;
@@ -29,6 +28,8 @@ namespace Hqv.MediaTools.Thumbnail
 
         public class Config
         {
+            public const string ConfigurationSectionName = nameof(ThumbnailCreationNotAccurateService);
+
             public Config()
             {
                 
@@ -37,45 +38,18 @@ namespace Hqv.MediaTools.Thumbnail
             public Config(string thumbnailPath, string ffmpegPath)
             {
                 ThumbnailPath = thumbnailPath;
-                FfmpegPath = ffmpegPath;
-
-                Validator.Validate<Config, SettingsValidator>(this);
+                FfmpegPath = ffmpegPath;                
             }
+
             public string ThumbnailPath { get; set; }
-            /// <summary>
-            /// FFmpeg path
-            /// </summary>
+            
             public string FfmpegPath { get; set; }            
         }
-
-        public class SettingsValidator : AbstractValidator<Config>
-        {
-            public SettingsValidator()
-            {
-                RuleFor(x => x.ThumbnailPath).Must(Directory.Exists);
-                RuleFor(x => x.FfmpegPath).Must(File.Exists);                
-            }
-        }
-
-        public class Response : ThumbnailCreateResponse
-        {
-            public Response(ThumbnailCreationRequest request) : base(request)
-            {
-            }
-
-            /// <summary>
-            /// FfmpegArguments. Only populated on error
-            /// </summary>
-            public string FfmpegArguments { get; set; }
-            /// <summary>
-            /// FfmpegErrorOutput. Only populated on error
-            /// </summary>
-            public string FfmpegErrorOutput { get; set; }
-        }
-        
+                        
         public ThumbnailCreationNotAccurateService(IOptions<Config> config)
         {
             _config = config.Value;
+            Validator.Validate<Config, ConfigValidator>(_config);
         }
 
         public ThumbnailCreateResponse Create(ThumbnailCreationRequest request)

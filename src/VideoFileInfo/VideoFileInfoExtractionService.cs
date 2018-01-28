@@ -24,7 +24,7 @@ namespace Hqv.MediaTools.VideoFileInfo
               
         public class Config
         {
-            public const string ConfigurationSectionName = " VideoFileInfoExtraction";
+            public const string ConfigurationSectionName = nameof(VideoFileInfoExtractionService);
 
             public Config()
             {
@@ -37,7 +37,7 @@ namespace Hqv.MediaTools.VideoFileInfo
                 Validate();
             }
 
-            private void Validate()
+            internal void Validate()
             {
                 if (!File.Exists(FfprobePath))
                 {
@@ -54,6 +54,7 @@ namespace Hqv.MediaTools.VideoFileInfo
         public VideoFileInfoExtractionService(IOptions<Config> config)
         {
             _config = config.Value;
+            _config.Validate();
             _ffprobeResultParser = new FfprobeResultParser();
         }
         

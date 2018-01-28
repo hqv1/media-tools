@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using FluentValidation;
 using Hqv.MediaTools.Types.FileDownload;
 using Hqv.Seedwork.App;
 using Hqv.Seedwork.Exceptions;
@@ -10,6 +9,7 @@ using Microsoft.Extensions.Options;
 
 namespace Hqv.MediaTools.FileDownload
 {    
+    /// <inheritdoc />
     /// <summary>
     /// Download a file using ffmpeg
     /// </summary>
@@ -22,6 +22,8 @@ namespace Hqv.MediaTools.FileDownload
 
         public class Config
         {
+            public const string ConfigurationSectionName = nameof(FileDownloaderService);
+
             public Config()
             {
                 
@@ -30,9 +32,7 @@ namespace Hqv.MediaTools.FileDownload
             public Config(string ffmpegPath, string savePath)
             {
                 FfmpegPath = ffmpegPath;
-                SavePath = savePath;
-
-                Validator.Validate<Config, SettingsValidator>(this);
+                SavePath = savePath;               
             }
 
             /// <summary>
@@ -44,35 +44,11 @@ namespace Hqv.MediaTools.FileDownload
             /// </summary>
             public string FfmpegPath { get; set; }            
         }
-
-        public class SettingsValidator : AbstractValidator<Config>
-        {
-            public SettingsValidator()
-            {
-                RuleFor(x => x.SavePath).Must(Directory.Exists);
-                RuleFor(x => x.FfmpegPath).Must(File.Exists);
-            }
-        }
-
-        public class Response : DownloadResponse
-        {
-            public Response(DownloadRequest request) : base(request)
-            {
-            }
-
-            /// <summary>
-            /// FfmpegArguments. Only populated on error
-            /// </summary>
-            public string FfmpegArguments { get; set; }
-
-            public string StandardOutput { get; set; }
-            public string StandardError { get; set; }
-            public int ResultCode { get; set; }
-        }
-
+               
         public FileDownloaderService(IOptions<Config>  config)
         {
             _config = config.Value;
+            Validator.Validate<Config, ConfigValidator>(_config);
         }
 
         public async Task<DownloadResponse> Download(DownloadRequest request)
@@ -141,5 +117,5 @@ namespace Hqv.MediaTools.FileDownload
             }
             return progress;
         }
-    }    
+    }
 }

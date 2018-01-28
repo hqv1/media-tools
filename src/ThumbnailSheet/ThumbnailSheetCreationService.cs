@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
-using FluentValidation;
 using Hqv.MediaTools.Types.ThumbnailSheet;
 using Hqv.Seedwork.Exceptions;
+using Hqv.Seedwork.Validations;
 using Microsoft.Extensions.Options;
 
 namespace Hqv.MediaTools.ThumbnailSheet
-{       
+{
     /// <inheritdoc />
     /// <summary>
     /// Thumbnail sheet service
@@ -22,6 +22,8 @@ namespace Hqv.MediaTools.ThumbnailSheet
         
         public class Config
         {
+            public const string ConfigurationSectionName = nameof(ThumbnailSheetCreationService);
+
             public Config()
             {
                 
@@ -31,9 +33,7 @@ namespace Hqv.MediaTools.ThumbnailSheet
             {
                 TempThumbnailPath = tempThumbnailPath;
                 ThumbnailSheetPath = thumbnailSheetPath;
-                FfmpegPath = ffmpegPath;
-
-                Validate();
+                FfmpegPath = ffmpegPath;                
             }
 
             /// <summary>
@@ -48,54 +48,9 @@ namespace Hqv.MediaTools.ThumbnailSheet
             /// <summary>
             /// FFmpeg path
             /// </summary>
-            public string FfmpegPath { get; set; }
-            
-            private void Validate()
-            {
-                var validator = new ConfigValidator();
-                var validationResult = validator.Validate(this);
-                if (validationResult.IsValid) return;
-
-                var exception = new HqvException("Validation failed");
-                exception.Data["errors"] = validationResult.Errors;
-                throw exception;
-            }
+            public string FfmpegPath { get; set; }            
         }
-
-        /// <inheritdoc />
-        /// <summary>
-        /// Validate Config
-        /// </summary>
-        private class ConfigValidator : AbstractValidator<Config>
-        {
-            public ConfigValidator()
-            {
-                RuleFor(x => x.TempThumbnailPath).Must(Directory.Exists);
-                RuleFor(x => x.ThumbnailSheetPath).Must(Directory.Exists);
-                RuleFor(x => x.FfmpegPath).Must(File.Exists);
-            }
-        }
-
-        /// <inheritdoc />
-        /// <summary>
-        /// Add some additional information to the response
-        /// </summary>
-        public class Response : ThumbnailSheetCreateResponse
-        {
-            public Response(ThumbnailSheetCreateRequest request) : base(request)
-            {
-            }
-
-            /// <summary>
-            /// FfmpegArguments. Only populated on error
-            /// </summary>
-            public string FfmpegArguments { get; set; }
-            /// <summary>
-            /// FfmpegErrorOutput. Only populated on error
-            /// </summary>
-            public string FfmpegErrorOutput { get; set; }
-        }
-
+               
         /// <summary>
         /// Constructor
         /// </summary>
@@ -103,6 +58,7 @@ namespace Hqv.MediaTools.ThumbnailSheet
         public ThumbnailSheetCreationService(IOptions<Config> config)
         {
             _config = config.Value;
+            Validator.Validate<Config, ConfigValidator>(_config);
 
             _thumbnailCreator = new ThumbnailCreatorExactLocation(_config);
             _sheetCreator = new SheetCreator(_config);
@@ -161,5 +117,5 @@ namespace Hqv.MediaTools.ThumbnailSheet
             foreach (var file in Directory.GetFiles(_config.TempThumbnailPath, "thumbnail*.png"))
                 File.Delete(file);
         }        
-    }    
+    }
 }

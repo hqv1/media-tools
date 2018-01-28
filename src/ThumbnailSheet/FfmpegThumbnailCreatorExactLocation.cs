@@ -22,7 +22,7 @@ namespace Hqv.MediaTools.ThumbnailSheet
 
         public void CreateThumbnail(
             ThumbnailSheetCreateRequest request, 
-            ThumbnailSheetCreationService.Response response,
+            Response response,
             TimeSpan currentPointInVideo, 
             string outputFilepath)
         {

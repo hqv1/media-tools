@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Hqv.MediaTools.Console.Actors;
 using Hqv.MediaTools.FileDownload;
 using Hqv.MediaTools.Thumbnail;
@@ -23,7 +24,7 @@ namespace Hqv.MediaTools.Console
             IServiceCollection services = new ServiceCollection();
 
             services.AddOptions();
-
+            
             services.AddScoped<ILogger>(provider => new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
                 .CreateLogger());
@@ -33,35 +34,22 @@ namespace Hqv.MediaTools.Console
             services.AddScoped<DownloadFileActor>();
 
             services.AddScoped<IAuditorResponseBase, AuditorResponseBase>();
-            services.Configure<AuditorResponseBase.Config>(config=>
-                configuration.GetSection("Auditing"));
+            services.Configure<AuditorResponseBase.Config>(configuration.GetSection("Auditing"));
 
+            services.Configure<FileDownloaderService.Config>(configuration.GetSection(FileDownloaderService.Config.ConfigurationSectionName));
             services.AddScoped<IFileDownloaderService, FileDownloaderService>();
-            services.AddScoped(provider => Microsoft.Extensions.Options.Options.Create(
-                new FileDownloaderService.Config(
-                    configuration["ffmpeg-path"],
-                    configuration["file-downloader:save-path"])));
 
+            services.Configure<ThumbnailCreationNotAccurateService.Config>(configuration.GetSection(ThumbnailCreationNotAccurateService.Config.ConfigurationSectionName));
             services.AddScoped<IThumbnailCreationService, ThumbnailCreationNotAccurateService>();
-            services.AddScoped(provider => Microsoft.Extensions.Options.Options.Create(
-                new ThumbnailCreationNotAccurateService.Config(
-                    configuration["thumbnail:thumbnail-path"],
-                    configuration["ffmpeg-path"])));
 
-
+            services.Configure<ThumbnailSheetCreationService.Config>(configuration.GetSection(ThumbnailSheetCreationService.Config.ConfigurationSectionName));
             services.AddScoped<IThumbnailSheetCreationService, ThumbnailSheetCreationService>();
-            services.AddScoped(provider => Microsoft.Extensions.Options.Options.Create(
-                new ThumbnailSheetCreationService.Config(
-                    configuration["thumbnailsheet:thumbnail-path-temp"],
-                    configuration["thumbnailsheet:sheet-path"],
-                    configuration["ffmpeg-path"])));            
 
+            services.Configure<VideoFileInfoExtractionService.Config>(configuration.GetSection(VideoFileInfoExtractionService.Config.ConfigurationSectionName));
             services.AddScoped<IVideoFileInfoExtractionService, VideoFileInfoExtractionService>();
-            services.AddScoped(provider => Microsoft.Extensions.Options.Options.Create(
-                new VideoFileInfoExtractionService.Config(
-                    configuration["ffprobe-path"])));
 
             return services.BuildServiceProvider();
         }
+        
     }    
 }

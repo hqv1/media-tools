@@ -33,7 +33,7 @@ namespace Hqv.MediaTools.ThumbnailSheet
 
         private readonly ThumbnailSheetCreationService.Config _config;
         private ThumbnailSheetCreateRequest _request;
-        private ThumbnailSheetCreationService.Response _response;
+        private Response _response;
         private readonly TimeStamper _timeStamper;
 
         public ThumbnailCreatorExactLocation(ThumbnailSheetCreationService.Config config)
@@ -42,7 +42,7 @@ namespace Hqv.MediaTools.ThumbnailSheet
             _timeStamper = new TimeStamper();
         }
 
-        public void CreateThumbnails(ThumbnailSheetCreateRequest request, ThumbnailSheetCreationService.Response response)
+        public void CreateThumbnails(ThumbnailSheetCreateRequest request, Response response)
         {
             _request = request;
             _response = response;

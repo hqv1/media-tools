@@ -17,6 +17,7 @@ namespace Hqv.VideoFileInfo.Tests
         
         private const string FfprobePath = @"C:\Apps\ffmpeg\bin\ffprobe.exe";
         private const string VideoFilePathValid = @"C:\Workspace\media-tools-space\test-files\JLT.mp4";
+        private const string VideoFileNoSoundPathValid = @"C:\Workspace\media-tools-space\test-files\NoSound.mp4";
 
         private VideoFileInfoExtractRequest _request;
         private readonly VideoFileInfoExtractionService _videoFileInfoExtractionService;
@@ -37,7 +38,20 @@ namespace Hqv.VideoFileInfo.Tests
             GivenAVideoFile();
             WhenTheServiceIsCalled();
             ThenVideoFileInformationIsExtracted();
-        }        
+        }
+
+        [Fact, Trait("Category", "Integration")]
+        public void Should_ExtractVideoFileInformation_WithNoSound()
+        {
+            GivenAVideoWithNoSoundFile();
+            WhenTheServiceIsCalled();
+            ThenVideoFileInformationIsExtracted();
+
+            void GivenAVideoWithNoSoundFile()
+            {
+                _request = new VideoFileInfoExtractRequest(VideoFileNoSoundPathValid, Guid.NewGuid().ToString());
+            }
+        }
 
         private void GivenAVideoFile()
         {

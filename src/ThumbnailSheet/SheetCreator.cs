@@ -24,7 +24,7 @@ namespace Hqv.MediaTools.ThumbnailSheet
             _config = config;
         }
 
-        public void CreateSheet(ThumbnailSheetCreateRequest request, ThumbnailSheetCreationService.Response response)
+        public void CreateSheet(ThumbnailSheetCreateRequest request, Response response)
         {            
             using (var images = new MagickImageCollection())
             {
@@ -32,7 +32,7 @@ namespace Hqv.MediaTools.ThumbnailSheet
             }
         }
 
-        private void CreateSheet(ThumbnailSheetCreateRequest request, ThumbnailSheetCreationService.Response response, IMagickImageCollection images)
+        private void CreateSheet(ThumbnailSheetCreateRequest request, Response response, IMagickImageCollection images)
         {
             int tempWidth = 0, tempHeight = 0;
             var files = Directory.GetFiles(_config.TempThumbnailPath, "thumbnail*.png").OrderBy(x => x).ToList();
