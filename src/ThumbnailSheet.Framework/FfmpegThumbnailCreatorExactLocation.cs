@@ -13,22 +13,22 @@ namespace Hqv.MediaTools.ThumbnailSheet.Framework
     {
         private static readonly object Lock = new object();
 
-        private readonly ThumbnailSheetCreationService.Settings _settings;
+        private readonly ThumbnailSheetCreationService.Config _config;
 
-        public FfmpegThumbnailCreatorExactLocation(ThumbnailSheetCreationService.Settings settings)
+        public FfmpegThumbnailCreatorExactLocation(ThumbnailSheetCreationService.Config config)
         {
-            _settings = settings;
+            _config = config;
         }
 
         public void CreateThumbnail(
             ThumbnailSheetCreateRequest request, 
-            ThumbnailSheetCreationService.Response response,
+            Response response,
             TimeSpan currentPointInVideo, 
             string outputFilepath)
         {
             var arguments = $"-i \"{request.VideoPath}\" -ss {currentPointInVideo} -vframes 1 {outputFilepath}";
             var app = new CommandLineApplication();
-            var result = app.Run(_settings.FfmpegPath, arguments);
+            var result = app.Run(_config.FfmpegPath, arguments);
             var errorInfo = result.ErrorData.Trim();            
 
             // Success means that the thumbnail is created.

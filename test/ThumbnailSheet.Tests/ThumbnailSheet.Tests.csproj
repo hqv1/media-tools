@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ThumbnailSheet\ThumbnailSheet.csproj" />
     <ProjectReference Include="..\..\src\Types\Types.csproj" />
   </ItemGroup>
 

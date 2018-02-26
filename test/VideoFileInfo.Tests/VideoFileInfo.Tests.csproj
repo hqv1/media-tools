@@ -17,7 +17,6 @@
   
   <ItemGroup>
     <ProjectReference Include="..\..\src\Types\Types.csproj" />
-    <ProjectReference Include="..\..\src\VideoFileInfo\VideoFileInfo.csproj" />
   </ItemGroup>
   
   <ItemGroup>
