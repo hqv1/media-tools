@@ -3,7 +3,7 @@ namespace Hqv.MediaTools.Types.Models
     /// <summary>
     /// Audio stream
     /// </summary>
-    public struct AudioStreamModel
+    public class AudioStreamModel
     {
         public AudioStreamModel(string codecName, double startTime, int channels, string channelLayout)
         {

@@ -3,7 +3,7 @@ namespace Hqv.MediaTools.Types.Models
     /// <summary>
     /// Video stream 
     /// </summary>
-    public struct VideoStreamModel
+    public class VideoStreamModel
     {
         public VideoStreamModel(int width, int height, string codecName, double startTime)
         {

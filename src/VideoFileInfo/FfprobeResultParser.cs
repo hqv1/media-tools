@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using Hqv.MediaTools.Types.Models;
@@ -22,7 +23,17 @@ namespace Hqv.MediaTools.VideoFileInfo
                 throw new HqvException("No format found");
             }
 
-            dynamic audioStream = json["streams"].FirstOrDefault(x => x["codec_type"].Value<string>() == "audio");
+            AudioStreamModel audioStreamModel;
+            try
+            {
+                dynamic audioStream = json["streams"].FirstOrDefault(x => x["codec_type"].Value<string>() == "audio");
+                audioStreamModel = GetAudioStream(audioStream);
+            }
+            catch (Exception)
+            {
+                audioStreamModel = null;
+            }
+            
 
             string path = format.filename;
             var filename = Path.GetFileNameWithoutExtension(path);
@@ -35,7 +46,7 @@ namespace Hqv.MediaTools.VideoFileInfo
 
 
             var videoFile = new VideoFileInformationModel(path, filename, extension, formatName, bitRate, filesize,
-                duration, GetVideoStream(videoStream), GetAudioStream(audioStream));            
+                duration, GetVideoStream(videoStream), audioStreamModel);            
             return videoFile;
         }
 
